@@ -80,7 +80,7 @@ final class React_User_Data {
 
         }
 
-//        new WeDevs\Academy\API();
+        new React\User\Data\API();
     }
 
     /**
@@ -89,8 +89,8 @@ final class React_User_Data {
      * @return void
      */
     public function activate() {
-//        $installer = new WeDevs\Academy\Installer();
-//        $installer->run();
+        $installer = new React\User\Data\Installer();
+        $installer->run();
     }
 }
 
@@ -98,4 +98,5 @@ function react_user_data() {
     return React_User_Data::init();
 }
 
+/** KICK OFF PLUGIN */
 react_user_data();

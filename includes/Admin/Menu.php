@@ -16,7 +16,12 @@ class Menu {
 
 
     public function react_user_data() {
-        echo 'Run react app here';
+
+        $templates = RUD_PATH . '/assets/templates';
+
+        if ( file_exists( $templates . '/react_user_data.php' ) ) {
+            include $templates . '/react_user_data.php';
+        }
     }
 
 
