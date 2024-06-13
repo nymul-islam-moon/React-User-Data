@@ -1,7 +1,8 @@
 import React, {useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import {updateUser} from "./UsersSlice";
+import {addUser, updateUser} from "./UsersSlice";
+import axios from "axios";
 
 const EditUsers = () => {
 
@@ -14,11 +15,30 @@ const EditUsers = () => {
     const [address, setAddress] = useState(location.state.address);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
-    const handleSubmit = (e) => {
+    const updateUrl = `${appLocalizer.apiUrl}/rud/v1/users/${id}`;
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        dispatch(updateUser({id, name, email, phone, address}));
-        navigate("/list-users", {replace: true});
+
+        try {
+            const response = await axios.put(updateUrl, {
+                name: name,
+                phone: phone,
+                email: email,
+                address: address
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-WP-Nonce': appLocalizer.nonce,
+                },
+            });
+
+            dispatch(updateUser(response.data));
+
+            navigate("/list-users", {replace: true});
+        } catch (error) {
+            console.error('Error adding user:', error);
+
+        }
     }
 
     return <>

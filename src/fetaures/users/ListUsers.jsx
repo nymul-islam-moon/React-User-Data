@@ -1,15 +1,56 @@
 import {useDispatch, useSelector} from "react-redux";
-import {deleteUser} from "./UsersSlice";
+import {deleteUser, setUsers} from "./UsersSlice";
 import {Link} from "react-router-dom";
+import {useEffect} from "react";
+import axios from "axios";
 
 const ListUsers = () => {
 
-    const users = useSelector((state) =>  state.usersReducer.users);
+    const { users, isLoading } = useSelector((state) =>  state.usersReducer);
     const dispatch = useDispatch();
+    const url = `${appLocalizer.apiUrl}/rud/v1/users`;
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(url, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-WP-Nonce': appLocalizer.nonce,
+                    },
+                });
+                dispatch(setUsers(response.data));
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                // setError(error);
+                // setIsLoading(false);
+            }
+        };
+        fetchData();
+    }, [dispatch]);
 
     const handleDelete = (id) => {
-        dispatch(deleteUser(id));
-    }
+        const deleteUrl = `${url}/${id}`;
+        if (window.confirm('Are you sure you want to delete this user?')) {
+            const deleteData = async () => {
+                try {
+                    const response = await axios.delete(deleteUrl, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-WP-Nonce': appLocalizer.nonce,
+                        },
+                    });
+                    dispatch(deleteUser(id));
+                } catch (error) {
+                    console.error('Error deleting user:', error);
+                    // setError(error);
+                    // setIsLoading(false);
+                }
+            };
+            deleteData();
+        }
+    };
 
     return(
         <div className="wrap">
@@ -33,6 +74,7 @@ const ListUsers = () => {
                     </tr>
                     </thead>
                     <tbody>
+
                     { users && users.map((user) => {
                         const {id, name, email, phone, address} = user;
                         return <tr>

@@ -1,7 +1,8 @@
 import {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {addUser} from "./UsersSlice";
+import {addUser, deleteUser} from "./UsersSlice";
 import {useNavigate} from "react-router-dom";
+import axios from "axios";
 
 const AddUsers = () => {
 
@@ -13,12 +14,31 @@ const AddUsers = () => {
     const navigate = useNavigate();
 
     const numberOfUsers = useSelector((state) => state.usersReducer.users.length);
+    const url = `${appLocalizer.apiUrl}/rud/v1/users`;
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const user = {id: numberOfUsers + 1, name, email, phone, address};
-        dispatch(addUser(user));
-        navigate("/list-users");
+
+        try {
+            const response = await axios.post(url, {
+                name: name,
+                phone: phone,
+                email: email,
+                address: address
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-WP-Nonce': appLocalizer.nonce,
+                },
+            });
+
+            dispatch(addUser(response.data));
+
+            navigate("/list-users");
+        } catch (error) {
+            console.error('Error adding user:', error);
+
+        }
     }
 
 
