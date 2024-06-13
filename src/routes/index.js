@@ -1,10 +1,11 @@
 import {HashRouter, Route, Routes} from "react-router-dom";
 import Home from "../pages/Home";
 import Error from "../pages/Error";
-import NavBar from "../components/NavBar";
 import ListUsers from "../fetaures/users/ListUsers";
 import AddUsers from "../fetaures/users/AddUsers";
 import EditUsers from "../fetaures/users/EditUsers";
+import Footer from "../layouts/Footer";
+import NavBar from "../layouts/NavBar";
 
 const Index = () => {
     return <>
@@ -19,6 +20,7 @@ const Index = () => {
                     <Route path="*" element={<Error />} />
                 </Routes>
             </main>
+            <Footer />
         </HashRouter>
     </>
 }

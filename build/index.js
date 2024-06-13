@@ -4574,34 +4574,6 @@ const store = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.configureStore)({
 
 /***/ }),
 
-/***/ "./src/components/NavBar.jsx":
-/*!***********************************!*\
-  !*** ./src/components/NavBar.jsx ***!
-  \***********************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/dist/index.js");
-
-
-const NavBar = () => {
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("nav", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_1__.Link, {
-    to: "/"
-  }, "Home"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_1__.Link, {
-    to: "/list-users"
-  }, "User List"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_1__.Link, {
-    to: "/add-users"
-  }, "Add User")));
-};
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (NavBar);
-
-/***/ }),
-
 /***/ "./src/fetaures/users/AddUsers.jsx":
 /*!*****************************************!*\
   !*** ./src/fetaures/users/AddUsers.jsx ***!
@@ -4644,62 +4616,76 @@ const AddUsers = () => {
     dispatch((0,_UsersSlice__WEBPACK_IMPORTED_MODULE_2__.addUser)(user));
     navigate("/list-users");
   };
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", null, "Add Users"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("form", {
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "wrap"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", {
+    className: "wp-heading-inline"
+  }, "Add New User"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("hr", {
+    className: "wp-header-end"
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("form", {
     onSubmit: handleSubmit
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "form-field"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("table", {
+    className: "form-table"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tbody", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", {
+    scope: "row"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
     htmlFor: "name"
-  }, "Name"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+  }, "Name")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+    name: "name",
     type: "text",
     id: "name",
-    name: "name",
     value: name,
     onChange: e => {
       setName(e.target.value);
     },
+    className: "regular-text",
     required: true
-  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "form-field"
+  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", {
+    scope: "row"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
     htmlFor: "email"
-  }, "Email"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+  }, "Email")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+    name: "email",
     type: "email",
     id: "email",
-    name: "email",
     value: email,
     onChange: e => {
       setEmail(e.target.value);
     },
+    className: "regular-text",
     required: true
-  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "form-field"
+  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", {
+    scope: "row"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
     htmlFor: "phone"
-  }, "Email"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
-    type: "text",
-    id: "phone",
+  }, "Phone")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
     name: "phone",
+    type: "tel",
+    id: "phone",
     value: phone,
     onChange: e => {
       setPhone(e.target.value);
     },
-    required: true
-  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "form-field"
+    className: "regular-text"
+  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", {
+    scope: "row"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
     htmlFor: "address"
-  }, "Address"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
-    type: "text",
-    id: "address",
+  }, "Address")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("textarea", {
     name: "address",
+    id: "address",
+    className: "regular-text",
+    rows: "3",
     value: address,
     onChange: e => {
       setAddress(e.target.value);
     }
-  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
-    type: "submit"
-  }, "Add User")));
+  }))))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+    className: "submit"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    type: "submit",
+    className: "button button-primary"
+  }, "Add User")))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (AddUsers);
 
@@ -4749,62 +4735,76 @@ const EditUsers = () => {
       replace: true
     });
   };
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", null, "Edit Users"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("form", {
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "wrap"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", {
+    className: "wp-heading-inline"
+  }, "Add New User"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("hr", {
+    className: "wp-header-end"
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("form", {
     onSubmit: handleSubmit
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "form-field"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("table", {
+    className: "form-table"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tbody", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", {
+    scope: "row"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
     htmlFor: "name"
-  }, "Name"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+  }, "Name")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+    name: "name",
     type: "text",
     id: "name",
-    name: "name",
     value: name,
     onChange: e => {
       setName(e.target.value);
     },
+    className: "regular-text",
     required: true
-  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "form-field"
+  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", {
+    scope: "row"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
     htmlFor: "email"
-  }, "Email"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+  }, "Email")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+    name: "email",
     type: "email",
     id: "email",
-    name: "email",
     value: email,
     onChange: e => {
       setEmail(e.target.value);
     },
+    className: "regular-text",
     required: true
-  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "form-field"
+  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", {
+    scope: "row"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
     htmlFor: "phone"
-  }, "Email"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
-    type: "text",
-    id: "phone",
+  }, "Phone")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
     name: "phone",
+    type: "tel",
+    id: "phone",
     value: phone,
     onChange: e => {
       setPhone(e.target.value);
     },
-    required: true
-  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "form-field"
+    className: "regular-text"
+  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", {
+    scope: "row"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
     htmlFor: "address"
-  }, "Address"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
-    type: "text",
-    id: "address",
+  }, "Address")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("textarea", {
     name: "address",
+    id: "address",
+    className: "regular-text",
+    rows: "3",
     value: address,
     onChange: e => {
       setAddress(e.target.value);
     }
-  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
-    type: "submit"
-  }, "Update User"))));
+  }))))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+    className: "submit"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    type: "submit",
+    className: "button button-primary"
+  }, "Update User")))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (EditUsers);
 
@@ -4835,7 +4835,41 @@ const ListUsers = () => {
   const handleDelete = id => {
     dispatch((0,_UsersSlice__WEBPACK_IMPORTED_MODULE_1__.deleteUser)(id));
   };
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", null, "Users List"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("table", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("thead", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", null, "ID"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", null, "Name"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", null, "Email"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", null, "Phone"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", null, "Address"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", null, "Action"))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tbody", null, users && users.map(user => {
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "wrap"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", {
+    className: "wp-heading-inline"
+  }, "Users"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
+    to: "/add-users",
+    className: "page-title-action"
+  }, "Add User"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("hr", {
+    className: "wp-header-end"
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("table", {
+    className: "wp-list-table widefat fixed striped"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("thead", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
+    id: "cb",
+    className: "manage-column column-cb check-column"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+    type: "checkbox"
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", {
+    scope: "col",
+    className: "manage-column column-name"
+  }, "Name"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", {
+    scope: "col",
+    className: "manage-column column-email"
+  }, "Email"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", {
+    scope: "col",
+    className: "manage-column column-phone"
+  }, "Phone"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", {
+    scope: "col",
+    className: "manage-column column-address"
+  }, "Address"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", {
+    scope: "col",
+    className: "manage-column column-date"
+  }, "Date"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", {
+    scope: "col",
+    className: "manage-column column-actions"
+  }, "Actions"))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tbody", null, users && users.map(user => {
     const {
       id,
       name,
@@ -4843,9 +4877,27 @@ const ListUsers = () => {
       phone,
       address
     } = user;
-    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", {
-      key: id
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", null, id), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", null, name), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", null, email), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", null, phone), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", null, address), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", {
+      scope: "row",
+      className: "check-column"
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+      type: "checkbox",
+      value: user.id
+    })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
+      className: "column-name"
+    }, user.name), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
+      className: "column-email"
+    }, user.email), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
+      className: "column-phone"
+    }, user.phone), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
+      className: "column-address"
+    }, user.address), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
+      className: "column-date"
+    }, "2024-05-30"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
+      className: "column-actions"
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+      className: "actions"
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
       to: "/edit-user",
       state: {
         id,
@@ -4854,14 +4906,75 @@ const ListUsers = () => {
         phone,
         address
       }
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", null, "Edit")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+      className: "edit"
+    }, "Edit")), "| ", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
       onClick: () => {
         handleDelete(id);
-      }
-    }, "Delete")));
+      },
+      className: "delete"
+    }, "Delete"))));
   }))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ListUsers);
+{/*<div>*/
+}
+{/*    <h1>Users List</h1>*/
+}
+{/*    <table>*/
+}
+{/*        <thead>*/
+}
+{/*            <tr>*/
+}
+{/*                <th>ID</th>*/
+}
+{/*                <th>Name</th>*/
+}
+{/*                <th>Email</th>*/
+}
+{/*                <th>Phone</th>*/
+}
+{/*                <th>Address</th>*/
+}
+{/*                <th>Action</th>*/
+}
+{/*            </tr>*/
+}
+{/*        </thead>*/
+}
+{/*        <tbody>*/
+}
+{/*        {users && users.map((user) => {*/
+}
+{/*            const { id, name, email, phone, address } = user;*/
+}
+{/*            return <tr key={id}>*/
+}
+{/*                <td>{id}</td>*/
+}
+{/*                <td>{name}</td>*/
+}
+{/*                <td>{email}</td>*/
+}
+{/*                <td>{phone}</td>*/
+}
+{/*                <td>{address}</td>*/
+}
+{/*                <td>*/
+}
+{/*                    <Link to="/edit-user" state={{id, name, email, phone, address}}>*/
+}
+{/*                        <button>Edit</button>*/
+}
+{/*                    </Link>*/}
+{/*                    <button onClick={ () => {handleDelete(id) }}>Delete</button>*/}
+{/*                </td>*/}
+{/*            </tr>*/}
+{/*        })}*/}
+{/*        </tbody>*/}
+{/*    </table>*/}
+{/*</div>*/}
 
 /***/ }),
 
@@ -4882,14 +4995,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.modern.mjs");
 
+
+// state
 const initialUsers = {
-  users: [{
-    id: 1,
-    name: "Nymul Islam",
-    phone: "01786287789",
-    email: "towkir1997islam@gmail.com",
-    address: "Dhaka, Bangladesh"
-  }]
+  users: [],
+  isLoading: false,
+  error: null
 };
 const usersSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createSlice)({
   name: "users",
@@ -4928,6 +5039,53 @@ const {
   updateUser
 } = usersSlice.actions;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (usersSlice.reducer);
+
+/***/ }),
+
+/***/ "./src/layouts/Footer.js":
+/*!*******************************!*\
+  !*** ./src/layouts/Footer.js ***!
+  \*******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+
+const Footer = () => {
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("footer", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "copyright by Nymul Islam @2024")));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Footer);
+
+/***/ }),
+
+/***/ "./src/layouts/NavBar.js":
+/*!*******************************!*\
+  !*** ./src/layouts/NavBar.js ***!
+  \*******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/dist/index.js");
+
+
+const NavBar = () => {
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("nav", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_1__.Link, {
+    to: "/",
+    className: "nav-link"
+  }, "Home"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_1__.Link, {
+    to: "/list-users"
+  }, "Users"));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (NavBar);
 
 /***/ }),
 
@@ -4986,14 +5144,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/dist/index.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/dist/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
 /* harmony import */ var _pages_Home__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../pages/Home */ "./src/pages/Home.jsx");
 /* harmony import */ var _pages_Error__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../pages/Error */ "./src/pages/Error.jsx");
-/* harmony import */ var _components_NavBar__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/NavBar */ "./src/components/NavBar.jsx");
-/* harmony import */ var _fetaures_users_ListUsers__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../fetaures/users/ListUsers */ "./src/fetaures/users/ListUsers.jsx");
-/* harmony import */ var _fetaures_users_AddUsers__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../fetaures/users/AddUsers */ "./src/fetaures/users/AddUsers.jsx");
-/* harmony import */ var _fetaures_users_EditUsers__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../fetaures/users/EditUsers */ "./src/fetaures/users/EditUsers.jsx");
+/* harmony import */ var _fetaures_users_ListUsers__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../fetaures/users/ListUsers */ "./src/fetaures/users/ListUsers.jsx");
+/* harmony import */ var _fetaures_users_AddUsers__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../fetaures/users/AddUsers */ "./src/fetaures/users/AddUsers.jsx");
+/* harmony import */ var _fetaures_users_EditUsers__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../fetaures/users/EditUsers */ "./src/fetaures/users/EditUsers.jsx");
+/* harmony import */ var _layouts_Footer__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../layouts/Footer */ "./src/layouts/Footer.js");
+/* harmony import */ var _layouts_NavBar__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../layouts/NavBar */ "./src/layouts/NavBar.js");
+
 
 
 
@@ -5003,24 +5163,24 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const Index = () => {
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_7__.HashRouter, {
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.HashRouter, {
     basename: "/"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_NavBar__WEBPACK_IMPORTED_MODULE_3__["default"], null), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("main", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Routes, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Route, {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_layouts_NavBar__WEBPACK_IMPORTED_MODULE_7__["default"], null), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("main", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_9__.Routes, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_9__.Route, {
     path: "/",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_pages_Home__WEBPACK_IMPORTED_MODULE_1__["default"], null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Route, {
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_9__.Route, {
     path: "/list-users",
-    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_fetaures_users_ListUsers__WEBPACK_IMPORTED_MODULE_4__["default"], null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Route, {
+    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_fetaures_users_ListUsers__WEBPACK_IMPORTED_MODULE_3__["default"], null)
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_9__.Route, {
     path: "/add-users",
-    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_fetaures_users_AddUsers__WEBPACK_IMPORTED_MODULE_5__["default"], null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Route, {
+    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_fetaures_users_AddUsers__WEBPACK_IMPORTED_MODULE_4__["default"], null)
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_9__.Route, {
     path: "/edit-user",
-    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_fetaures_users_EditUsers__WEBPACK_IMPORTED_MODULE_6__["default"], null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Route, {
+    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_fetaures_users_EditUsers__WEBPACK_IMPORTED_MODULE_5__["default"], null)
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_9__.Route, {
     path: "*",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_pages_Error__WEBPACK_IMPORTED_MODULE_2__["default"], null)
-  })))));
+  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_layouts_Footer__WEBPACK_IMPORTED_MODULE_6__["default"], null)));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Index);
 
