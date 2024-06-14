@@ -134,6 +134,34 @@ body {
     pointer-events: none;
 }
 
+/* Navbar container */
+nav {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: #23282d; /* WordPress dark grey color */
+    padding: 10px 20px;
+}
+
+/* Navbar links */
+.nav-link {
+    color: #dcdcdc; /* WordPress light grey text color */
+    text-decoration: none; /* Remove underline */
+    padding: 10px 15px;
+    margin-right: 15px;
+    border-radius: 3px;
+    transition: background-color 0.3s ease;
+}
+
+/* Navbar links hover effect */
+.nav-link:hover {
+    background-color: #0073aa; /* WordPress blue color */
+}
+
+/* Active link styling (optional) */
+.nav-link.active {
+    background-color: #005177; /* Darker blue for active link */
+}
 
 
 /*# sourceMappingURL=index.css.map*/

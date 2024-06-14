@@ -7337,17 +7337,8 @@ const ListUsers = () => {
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_5__.useSelector)(state => state.usersReducer);
   const [totalData, setTotalData] = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(0);
   const [totalPage, setTotalPage] = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(0);
+  const [usersPerPage, setUsersPerPage] = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(10); // Assuming 10 users per page initially
   const [currentPage, setCurrentPage] = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(1);
-  const [usersPerPage, setUsersPerPage] = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(0);
-  const updateTotalData = data => {
-    setTotalData(data);
-  };
-  const updateTotalPage = data => {
-    setTotalPage(data);
-  };
-  const updateUsersPerPage = data => {
-    setUsersPerPage(data);
-  };
   (0,react__WEBPACK_IMPORTED_MODULE_2__.useEffect)(() => {
     const fetchData = async () => {
       try {
@@ -7358,14 +7349,11 @@ const ListUsers = () => {
           }
         });
         const headers = response.headers;
-        updateTotalData(headers['x-wp-total']);
-        updateTotalPage(headers['x-wp-totalpages']);
-        updateUsersPerPage(headers['x-wp-perpage']);
+        setTotalData(parseInt(headers['x-wp-total'], 10));
+        setTotalPage(parseInt(headers['x-wp-totalpages'], 10));
         dispatch((0,_UsersSlice__WEBPACK_IMPORTED_MODULE_1__.setUsers)(response.data));
       } catch (error) {
         console.error('Error fetching data:', error);
-        // setError(error);
-        // setIsLoading(false);
       }
     };
     fetchData();
@@ -7375,21 +7363,19 @@ const ListUsers = () => {
     if (window.confirm('Are you sure you want to delete this user?')) {
       const deleteData = async () => {
         try {
-          const response = await axios__WEBPACK_IMPORTED_MODULE_3___default()["delete"](deleteUrl, {
+          await axios__WEBPACK_IMPORTED_MODULE_3___default()["delete"](deleteUrl, {
             headers: {
               'Content-Type': 'application/json',
               'X-WP-Nonce': appLocalizer.nonce
             }
           });
           dispatch((0,_UsersSlice__WEBPACK_IMPORTED_MODULE_1__.deleteUser)(id));
+          setTotalData(totalData - 1);
         } catch (error) {
           console.error('Error deleting user:', error);
-          // setError(error);
-          // setIsLoading(false);
         }
       };
       deleteData();
-      setTotalData(totalData - 1);
     }
   };
   const handleNextPage = () => {
@@ -7440,7 +7426,6 @@ const ListUsers = () => {
     name: "m",
     id: "filter-by-date"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
-    selected: "selected",
     value: "0"
   }, "All dates"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
     value: "202406"
@@ -7503,21 +7488,23 @@ const ListUsers = () => {
       phone,
       address
     } = user;
-    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", {
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", {
+      key: id
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", {
       scope: "row",
       className: "check-column"
     }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
       type: "checkbox",
-      value: user.id
+      value: id
     })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
       className: "column-name"
-    }, user.name), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
+    }, name), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
       className: "column-email"
-    }, user.email), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
+    }, email), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
       className: "column-phone"
-    }, user.phone), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
+    }, phone), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
       className: "column-address"
-    }, user.address), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
+    }, address), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
       className: "column-date"
     }, "2024-05-30"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
       className: "column-actions"
@@ -7534,13 +7521,11 @@ const ListUsers = () => {
       }
     }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
       className: "edit"
-    }, "Edit")), "| ", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
-      onClick: () => {
-        handleDelete(id);
-      },
+    }, "Edit")), "|", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+      onClick: () => handleDelete(id),
       className: "delete"
     }, "Delete"))));
-  }))), totalData && totalData > 10 && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_layouts_Pagination__WEBPACK_IMPORTED_MODULE_4__["default"], {
+  }))), totalData > 10 && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_layouts_Pagination__WEBPACK_IMPORTED_MODULE_4__["default"], {
     currentPage: currentPage,
     totalPage: totalPage,
     prePage: handlePreviousPage,
@@ -7705,7 +7690,19 @@ const Pagination = props => {
       e.preventDefault();
       prePage();
     }
-  }, "\xAB Previous")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", {
+  }, "\xAB Previous")), Array.from({
+    length: totalPage
+  }, (_, index) => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", {
+    key: index + 1,
+    className: `page-item ${currentPage === index + 1 ? 'active' : ''}`
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
+    href: "#",
+    className: "page-link",
+    onClick: e => {
+      e.preventDefault();
+      setCurrentPage(index + 1);
+    }
+  }, index + 1))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", {
     className: `page-item ${currentPage === totalPage ? 'disabled' : ''}`
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
     href: "#",
