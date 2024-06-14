@@ -7333,7 +7333,8 @@ const ListUsers = () => {
   const url = `${appLocalizer.apiUrl}/rud/v1/users`;
   const {
     users,
-    isLoading
+    isLoading,
+    error
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_5__.useSelector)(state => state.usersReducer);
   const [totalData, setTotalData] = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(0);
   const [totalPage, setTotalPage] = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(0);
@@ -7342,6 +7343,7 @@ const ListUsers = () => {
   (0,react__WEBPACK_IMPORTED_MODULE_2__.useEffect)(() => {
     const fetchData = async () => {
       try {
+        dispatch((0,_UsersSlice__WEBPACK_IMPORTED_MODULE_1__.updateLoadingState)(true));
         const response = await axios__WEBPACK_IMPORTED_MODULE_3___default().get(`${url}?page=${currentPage}`, {
           headers: {
             'Content-Type': 'application/json',
@@ -7352,8 +7354,11 @@ const ListUsers = () => {
         setTotalData(parseInt(headers['x-wp-total'], 10));
         setTotalPage(parseInt(headers['x-wp-totalpages'], 10));
         dispatch((0,_UsersSlice__WEBPACK_IMPORTED_MODULE_1__.setUsers)(response.data));
+        dispatch((0,_UsersSlice__WEBPACK_IMPORTED_MODULE_1__.updateLoadingState)(false));
       } catch (error) {
         console.error('Error fetching data:', error);
+        dispatch((0,_UsersSlice__WEBPACK_IMPORTED_MODULE_1__.setError)(error));
+        dispatch((0,_UsersSlice__WEBPACK_IMPORTED_MODULE_1__.updateLoadingState)(false));
       }
     };
     fetchData();
@@ -7388,6 +7393,7 @@ const ListUsers = () => {
       setCurrentPage(currentPage - 1);
     }
   };
+  console.log(error);
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "wrap"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", {
@@ -7480,7 +7486,21 @@ const ListUsers = () => {
   }, "Date"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", {
     scope: "col",
     className: "manage-column column-actions"
-  }, "Actions"))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tbody", null, users && users.map(user => {
+  }, "Actions"))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tbody", null, isLoading && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
+    colSpan: "7",
+    style: {
+      textAlign: 'center',
+      fontWeight: 'bold',
+      fontSize: '1.2em'
+    }
+  }, "Loading...")), !isLoading && users.length === 0 && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
+    colSpan: "7",
+    style: {
+      textAlign: 'center',
+      fontWeight: 'bold',
+      fontSize: '1.2em'
+    }
+  }, "No Data Found")), !isLoading && users && users.map(user => {
     const {
       id,
       name,
@@ -7548,8 +7568,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   addUser: () => (/* binding */ addUser),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
 /* harmony export */   deleteUser: () => (/* binding */ deleteUser),
+/* harmony export */   setError: () => (/* binding */ setError),
 /* harmony export */   setUsers: () => (/* binding */ setUsers),
 /* harmony export */   showUsers: () => (/* binding */ showUsers),
+/* harmony export */   updateLoadingState: () => (/* binding */ updateLoadingState),
 /* harmony export */   updateUser: () => (/* binding */ updateUser),
 /* harmony export */   usersSlice: () => (/* binding */ usersSlice)
 /* harmony export */ });
@@ -7572,6 +7594,12 @@ const usersSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createSlice)
     },
     addUser: (state, action) => {
       state.users.push(action.payload);
+    },
+    updateLoadingState: (state, action) => {
+      state.isLoading = action.payload;
+    },
+    setError: (state, action) => {
+      state.error = action.payload;
     },
     updateUser: (state, action) => {
       const {
@@ -7596,7 +7624,9 @@ const usersSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createSlice)
   }
 });
 const {
+  setError,
   showUsers,
+  updateLoadingState,
   addUser,
   deleteUser,
   updateUser,

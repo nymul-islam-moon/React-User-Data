@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { deleteUser, setUsers } from "./UsersSlice";
+import {deleteUser, setError, setUsers, updateLoadingState} from "./UsersSlice";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -8,7 +8,7 @@ import Pagination from "../../layouts/Pagination";
 const ListUsers = () => {
     const dispatch = useDispatch();
     const url = `${appLocalizer.apiUrl}/rud/v1/users`;
-    const { users, isLoading } = useSelector((state) => state.usersReducer);
+    const { users, isLoading, error } = useSelector((state) => state.usersReducer);
 
     const [totalData, setTotalData] = useState(0);
     const [totalPage, setTotalPage] = useState(0);
@@ -17,7 +17,9 @@ const ListUsers = () => {
 
     useEffect(() => {
         const fetchData = async () => {
+
             try {
+                dispatch(updateLoadingState(true))
                 const response = await axios.get(`${url}?page=${currentPage}`, {
                     headers: {
                         'Content-Type': 'application/json',
@@ -28,8 +30,11 @@ const ListUsers = () => {
                 setTotalData(parseInt(headers['x-wp-total'], 10));
                 setTotalPage(parseInt(headers['x-wp-totalpages'], 10));
                 dispatch(setUsers(response.data));
+                dispatch(updateLoadingState(false))
             } catch (error) {
                 console.error('Error fetching data:', error);
+                dispatch(setError(error))
+                dispatch(updateLoadingState(false))
             }
         };
         fetchData();
@@ -67,6 +72,9 @@ const ListUsers = () => {
             setCurrentPage(currentPage - 1);
         }
     };
+
+
+    console.log(error)
 
     return (
         <div className="wrap">
@@ -118,8 +126,26 @@ const ListUsers = () => {
                 </tr>
                 </thead>
                 <tbody>
-                {users && users.map((user) => {
-                    const { id, name, email, phone, address } = user;
+
+                {isLoading && (
+                    <tr>
+                        <td colSpan="7" style={{ textAlign: 'center', fontWeight: 'bold', fontSize: '1.2em' }}>
+                            Loading...
+                        </td>
+                    </tr>
+                )}
+
+
+                {!isLoading && users.length === 0 && (
+                    <tr>
+                        <td colSpan="7" style={{textAlign: 'center', fontWeight: 'bold', fontSize: '1.2em'}}>
+                            No Data Found
+                        </td>
+                    </tr>
+                )}
+
+                {!isLoading && users && users.map((user) => {
+                    const {id, name, email, phone, address} = user;
                     return (
                         <tr key={id}>
                             <th scope="row" className="check-column">
