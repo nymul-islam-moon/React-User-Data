@@ -1,25 +1,47 @@
 import {useDispatch, useSelector} from "react-redux";
 import {deleteUser, setUsers} from "./UsersSlice";
 import {Link} from "react-router-dom";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import axios from "axios";
+import Pagination from "../../layouts/Pagination";
 
 const ListUsers = () => {
 
-    const { users, isLoading } = useSelector((state) =>  state.usersReducer);
     const dispatch = useDispatch();
     const url = `${appLocalizer.apiUrl}/rud/v1/users`;
 
+    const { users, isLoading }                      = useSelector((state) =>  state.usersReducer);
+    const [ totalData, setTotalData ]       = useState(0);
+    const [ totalPage, setTotalPage ]       = useState(0);
+    const [ currentPage, setCurrentPage ]   = useState(1);
+    const [ usersPerPage , setUsersPerPage ] = useState(0);
+
+    const updateTotalData = (data) => {
+        setTotalData(data);
+    }
+
+    const updateTotalPage = (data) => {
+        setTotalPage(data);
+    }
+
+    const updateUsersPerPage = (data) => {
+        setUsersPerPage(data);
+    }
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(url, {
+                const response = await axios.get(`${url}?page=${currentPage}`, {
                     headers: {
                         'Content-Type': 'application/json',
                         'X-WP-Nonce': appLocalizer.nonce,
                     },
                 });
+                const headers = response.headers;
+                updateTotalData(headers['x-wp-total']);
+                updateTotalPage(headers['x-wp-totalpages']);
+                updateUsersPerPage( headers['x-wp-perpage'] );
+
                 dispatch(setUsers(response.data));
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -28,7 +50,8 @@ const ListUsers = () => {
             }
         };
         fetchData();
-    }, [dispatch]);
+    }, [dispatch, currentPage]);
+
 
     const handleDelete = (id) => {
         const deleteUrl = `${url}/${id}`;
@@ -49,44 +72,89 @@ const ListUsers = () => {
                 }
             };
             deleteData();
+            setTotalData( totalData - 1 );
+        }
+    };
+
+    const handleNextPage = () => {
+        if (currentPage < totalPage) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
+    const handlePreviousPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
         }
     };
 
     return(
         <div className="wrap">
             <h1 className="wp-heading-inline">Users</h1>
-            <Link to="/add-users" className="page-title-action" >
+            <Link to="/add-users" className="page-title-action">
                 Add User
             </Link>
-            <hr className="wp-header-end" />
-                <table className="wp-list-table widefat fixed striped">
-                    <thead>
-                    <tr>
-                        <td id="cb" className="manage-column column-cb check-column">
-                            <input type="checkbox" />
-                        </td>
-                        <th scope="col" className="manage-column column-name">Name</th>
-                        <th scope="col" className="manage-column column-email">Email</th>
-                        <th scope="col" className="manage-column column-phone">Phone</th>
-                        <th scope="col" className="manage-column column-address">Address</th>
-                        <th scope="col" className="manage-column column-date">Date</th>
-                        <th scope="col" className="manage-column column-actions">Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
+            <div className="tablenav top">
 
-                    { users && users.map((user) => {
-                        const {id, name, email, phone, address} = user;
-                        return <tr>
-                            <th scope="row" className="check-column">
-                                <input type="checkbox" value={user.id}/>
-                            </th>
-                            <td className="column-name">{ user.name }</td>
-                            <td className="column-email">{ user.email }</td>
-                            <td className="column-phone">{ user.phone }</td>
-                            <td className="column-address">{ user.address }</td>
-                            <td className="column-date">2024-05-30</td>
-                            <td className="column-actions">
+                <div className="alignleft actions bulkactions">
+                    <label htmlFor="bulk-action-selector-top" className="screen-reader-text">Select bulk action</label>
+                    <select name="action" id="bulk-action-selector-top">
+                        <option value="-1">Bulk actions</option>
+                        <option value="edit" className="hide-if-no-js">Edit</option>
+                        <option value="trash">Move to Trash</option>
+                    </select>
+                    <input type="submit" id="doaction" className="button action" value="Apply"/>
+                </div>
+                <div className="alignleft actions">
+                    <label htmlFor="filter-by-date" className="screen-reader-text">Filter by date</label>
+                    <select name="m" id="filter-by-date">
+                        <option selected="selected" value="0">All dates</option>
+                        <option value="202406">June 2024</option>
+                    </select>
+                    <label className="screen-reader-text" htmlFor="cat">Filter by category</label>
+                    <select name="cat" id="cat" className="postform">
+                        <option value="0">All Categories</option>
+                        <option className="level-0" value="1">Uncategorized</option>
+                    </select>
+                    <input type="submit" name="filter_action" id="post-query-submit" className="button" value="Filter"/>
+                </div>
+
+                <div className="tablenav-pages one-page">
+                    <span className="displaying-num">
+                        Total Users { totalData }
+                    </span>
+                </div>
+                <br className="clear"/>
+            </div>
+            <hr className="wp-header-end"/>
+            <table className="wp-list-table widefat fixed striped">
+                <thead>
+                <tr>
+                    <td id="cb" className="manage-column column-cb check-column">
+                        <input type="checkbox"/>
+                    </td>
+                    <th scope="col" className="manage-column column-name">Name</th>
+                    <th scope="col" className="manage-column column-email">Email</th>
+                    <th scope="col" className="manage-column column-phone">Phone</th>
+                    <th scope="col" className="manage-column column-address">Address</th>
+                    <th scope="col" className="manage-column column-date">Date</th>
+                    <th scope="col" className="manage-column column-actions">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {users && users.map((user) => {
+                    const {id, name, email, phone, address} = user;
+                    return <tr>
+                        <th scope="row" className="check-column">
+                            <input type="checkbox" value={user.id}/>
+                        </th>
+                        <td className="column-name">{user.name}</td>
+                        <td className="column-email">{user.email}</td>
+                        <td className="column-phone">{user.phone}</td>
+                        <td className="column-address">{user.address}</td>
+                        <td className="column-date">2024-05-30</td>
+                        <td className="column-actions">
                         <span className="actions">
                             <Link to="/edit-user" state={{id, name, email, phone, address}}>
                                 <button className="edit">Edit</button>
@@ -95,12 +163,20 @@ const ListUsers = () => {
                             handleDelete(id)
                         }} className="delete">Delete</button>
                         </span>
-                            </td>
-                        </tr>
-                    })}
+                        </td>
+                    </tr>
+                })}
+                </tbody>
+            </table>
 
-                    </tbody>
-                </table>
+            {totalData && totalData > 10 && (
+                <Pagination
+                    currentPage={currentPage}
+                    totalPage={totalPage}
+                    prePage={handlePreviousPage}
+                    nextPage={handleNextPage}
+                />
+            )}
         </div>
     )
 }
