@@ -7222,7 +7222,7 @@ const EditUsers = () => {
         replace: true
       });
     } catch (error) {
-      console.error('Error adding user:', error);
+      console.error('Error adding user:', error.response);
     }
   };
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -7332,18 +7332,17 @@ const ListUsers = () => {
   const dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_5__.useDispatch)();
   const url = `${appLocalizer.apiUrl}/rud/v1/users`;
   const {
-    users,
-    isLoading,
-    error
+    users
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_5__.useSelector)(state => state.usersReducer);
+  const [isLoading, setIsLoading] = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(false);
   const [totalData, setTotalData] = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(0);
   const [totalPage, setTotalPage] = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(0);
   const [usersPerPage, setUsersPerPage] = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(10); // Assuming 10 users per page initially
   const [currentPage, setCurrentPage] = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(1);
   (0,react__WEBPACK_IMPORTED_MODULE_2__.useEffect)(() => {
-    const fetchData = async () => {
+    (async () => {
+      setIsLoading(true);
       try {
-        dispatch((0,_UsersSlice__WEBPACK_IMPORTED_MODULE_1__.updateLoadingState)(true));
         const response = await axios__WEBPACK_IMPORTED_MODULE_3___default().get(`${url}?page=${currentPage}`, {
           headers: {
             'Content-Type': 'application/json',
@@ -7354,33 +7353,28 @@ const ListUsers = () => {
         setTotalData(parseInt(headers['x-wp-total'], 10));
         setTotalPage(parseInt(headers['x-wp-totalpages'], 10));
         dispatch((0,_UsersSlice__WEBPACK_IMPORTED_MODULE_1__.setUsers)(response.data));
-        dispatch((0,_UsersSlice__WEBPACK_IMPORTED_MODULE_1__.updateLoadingState)(false));
+        setIsLoading(false);
       } catch (error) {
-        console.error('Error fetching data:', error);
-        dispatch((0,_UsersSlice__WEBPACK_IMPORTED_MODULE_1__.setError)(error));
-        dispatch((0,_UsersSlice__WEBPACK_IMPORTED_MODULE_1__.updateLoadingState)(false));
+        setIsLoading(false);
+        console.log(error);
       }
-    };
-    fetchData();
-  }, [dispatch, currentPage]);
-  const handleDelete = id => {
+    })();
+  }, [dispatch, currentPage, totalData]);
+  const handleDelete = async id => {
     const deleteUrl = `${url}/${id}`;
     if (window.confirm('Are you sure you want to delete this user?')) {
-      const deleteData = async () => {
-        try {
-          await axios__WEBPACK_IMPORTED_MODULE_3___default()["delete"](deleteUrl, {
-            headers: {
-              'Content-Type': 'application/json',
-              'X-WP-Nonce': appLocalizer.nonce
-            }
-          });
-          dispatch((0,_UsersSlice__WEBPACK_IMPORTED_MODULE_1__.deleteUser)(id));
-          setTotalData(totalData - 1);
-        } catch (error) {
-          console.error('Error deleting user:', error);
-        }
-      };
-      deleteData();
+      try {
+        await axios__WEBPACK_IMPORTED_MODULE_3___default()["delete"](deleteUrl, {
+          headers: {
+            'Content-Type': 'application/json',
+            'X-WP-Nonce': appLocalizer.nonce
+          }
+        });
+        dispatch((0,_UsersSlice__WEBPACK_IMPORTED_MODULE_1__.deleteUser)(id));
+        // setTotalData( totalData - 1 );
+      } catch (error) {
+        console.error('Error deleting user:', error);
+      }
     }
   };
   const handleNextPage = () => {
@@ -7393,7 +7387,6 @@ const ListUsers = () => {
       setCurrentPage(currentPage - 1);
     }
   };
-  console.log(error);
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "wrap"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", {
@@ -7568,10 +7561,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   addUser: () => (/* binding */ addUser),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
 /* harmony export */   deleteUser: () => (/* binding */ deleteUser),
-/* harmony export */   setError: () => (/* binding */ setError),
 /* harmony export */   setUsers: () => (/* binding */ setUsers),
-/* harmony export */   showUsers: () => (/* binding */ showUsers),
-/* harmony export */   updateLoadingState: () => (/* binding */ updateLoadingState),
 /* harmony export */   updateUser: () => (/* binding */ updateUser),
 /* harmony export */   usersSlice: () => (/* binding */ usersSlice)
 /* harmony export */ });
@@ -7580,26 +7570,17 @@ __webpack_require__.r(__webpack_exports__);
 
 // state
 const initialUsers = {
-  users: [],
-  isLoading: false,
-  error: null
+  users: []
 };
 const usersSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createSlice)({
   name: "users",
   initialState: initialUsers,
   reducers: {
-    showUsers: state => state,
     setUsers: (state, action) => {
       state.users = action.payload;
     },
     addUser: (state, action) => {
       state.users.push(action.payload);
-    },
-    updateLoadingState: (state, action) => {
-      state.isLoading = action.payload;
-    },
-    setError: (state, action) => {
-      state.error = action.payload;
     },
     updateUser: (state, action) => {
       const {
@@ -7624,9 +7605,6 @@ const usersSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createSlice)
   }
 });
 const {
-  setError,
-  showUsers,
-  updateLoadingState,
   addUser,
   deleteUser,
   updateUser,

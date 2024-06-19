@@ -2,16 +2,13 @@ import {createSlice} from "@reduxjs/toolkit";
 
 // state
 const initialUsers = {
-    users: [],
-    isLoading: false,
-    error: null,
+    users: []
 };
 
 export const usersSlice = createSlice({
     name: "users",
     initialState: initialUsers,
     reducers: {
-        showUsers: (state) => state,
 
         setUsers: ( state, action ) => {
             state.users = action.payload;
@@ -19,13 +16,6 @@ export const usersSlice = createSlice({
 
         addUser: (state, action) => {
             state.users.push(action.payload);
-        },
-        updateLoadingState:(state, action)=>{
-            state.isLoading = action.payload
-        },
-
-        setError :(state, action)=>{
-            state.error =action.payload
         },
 
         updateUser: (state, action) => {
@@ -49,6 +39,6 @@ export const usersSlice = createSlice({
     },
 });
 
-export const {setError, showUsers,updateLoadingState, addUser, deleteUser, updateUser, setUsers } = usersSlice.actions;
+export const { addUser, deleteUser, updateUser, setUsers } = usersSlice.actions;
 
 export default usersSlice.reducer;

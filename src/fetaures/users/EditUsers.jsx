@@ -36,7 +36,7 @@ const EditUsers = () => {
 
             navigate("/list-users", {replace: true});
         } catch (error) {
-            console.error('Error adding user:', error);
+            console.error('Error adding user:', error.response);
 
         }
     }

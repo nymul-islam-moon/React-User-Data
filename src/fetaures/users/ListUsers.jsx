@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import {deleteUser, setError, setUsers, updateLoadingState} from "./UsersSlice";
+import { deleteUser, setUsers } from "./UsersSlice";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -8,7 +8,9 @@ import Pagination from "../../layouts/Pagination";
 const ListUsers = () => {
     const dispatch = useDispatch();
     const url = `${appLocalizer.apiUrl}/rud/v1/users`;
-    const { users, isLoading, error } = useSelector((state) => state.usersReducer);
+    const { users } = useSelector((state) => state.usersReducer);
+
+    const [ isLoading, setIsLoading ] = useState(false);
 
     const [totalData, setTotalData] = useState(0);
     const [totalPage, setTotalPage] = useState(0);
@@ -16,10 +18,9 @@ const ListUsers = () => {
     const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
-        const fetchData = async () => {
-
+        (async () => {
+            setIsLoading(true);
             try {
-                dispatch(updateLoadingState(true))
                 const response = await axios.get(`${url}?page=${currentPage}`, {
                     headers: {
                         'Content-Type': 'application/json',
@@ -30,34 +31,29 @@ const ListUsers = () => {
                 setTotalData(parseInt(headers['x-wp-total'], 10));
                 setTotalPage(parseInt(headers['x-wp-totalpages'], 10));
                 dispatch(setUsers(response.data));
-                dispatch(updateLoadingState(false))
+                setIsLoading(false);
             } catch (error) {
-                console.error('Error fetching data:', error);
-                dispatch(setError(error))
-                dispatch(updateLoadingState(false))
+                setIsLoading(false);
+                console.log(error);
             }
-        };
-        fetchData();
-    }, [dispatch, currentPage]);
+        })();
+    }, [dispatch, currentPage, totalData]);
 
-    const handleDelete = (id) => {
+    const handleDelete = async (id) => {
         const deleteUrl = `${url}/${id}`;
         if (window.confirm('Are you sure you want to delete this user?')) {
-            const deleteData = async () => {
-                try {
-                    await axios.delete(deleteUrl, {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-WP-Nonce': appLocalizer.nonce,
-                        },
-                    });
-                    dispatch(deleteUser(id));
-                    setTotalData(totalData - 1);
-                } catch (error) {
-                    console.error('Error deleting user:', error);
-                }
-            };
-            deleteData();
+            try {
+                await axios.delete(deleteUrl, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-WP-Nonce': appLocalizer.nonce,
+                    },
+                });
+                dispatch(deleteUser(id));
+                // setTotalData( totalData - 1 );
+            } catch (error) {
+                console.error('Error deleting user:', error);
+            }
         }
     };
 
@@ -72,9 +68,6 @@ const ListUsers = () => {
             setCurrentPage(currentPage - 1);
         }
     };
-
-
-    console.log(error)
 
     return (
         <div className="wrap">
