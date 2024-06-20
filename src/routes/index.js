@@ -6,6 +6,7 @@ import AddUsers from "../fetaures/users/AddUsers";
 import EditUsers from "../fetaures/users/EditUsers";
 import Footer from "../layouts/Footer";
 import NavBar from "../layouts/NavBar";
+import Books from "../pages/books/Books";
 
 const Index = () => {
     return <>
@@ -14,9 +15,14 @@ const Index = () => {
             <main>
                 <Routes>
                     <Route path="/" element={<Home />}/>
-                        <Route path="/list-users" element={<ListUsers />}/>
+
+                    {/* Users Routes */}
+                    <Route path="/list-users" element={<ListUsers />}/>
                     <Route path="/add-users" element={<AddUsers />}/>
                     <Route path="/edit-user" element={<EditUsers />}/>
+
+                    {/* Books Routes */}
+                    <Route path="/books" element={<Books />}/>
                     <Route path="*" element={<Error />} />
                 </Routes>
             </main>

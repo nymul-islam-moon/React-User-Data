@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Pagination from "../../layouts/Pagination";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ListUsers = () => {
     const dispatch = useDispatch();
@@ -43,13 +45,16 @@ const ListUsers = () => {
         const deleteUrl = `${url}/${id}`;
         if (window.confirm('Are you sure you want to delete this user?')) {
             try {
-                await axios.delete(deleteUrl, {
+                const response = await axios.delete(deleteUrl, {
                     headers: {
                         'Content-Type': 'application/json',
                         'X-WP-Nonce': appLocalizer.nonce,
                     },
                 });
                 dispatch(deleteUser(id));
+                const dataInfo = response.data;
+                // console.log(dataInfo.previous.name);
+                toast.error( dataInfo.previous.name + ' has deleted successfully');
                 // setTotalData( totalData - 1 );
             } catch (error) {
                 console.error('Error deleting user:', error);
@@ -171,6 +176,7 @@ const ListUsers = () => {
                     nextPage={handleNextPage}
                 />
             )}
+            <ToastContainer />
         </div>
     );
 };

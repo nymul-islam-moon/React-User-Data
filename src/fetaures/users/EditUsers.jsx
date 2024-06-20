@@ -31,13 +31,12 @@ const EditUsers = () => {
                     'X-WP-Nonce': appLocalizer.nonce,
                 },
             });
-
+            console.log(response.data);
             dispatch(updateUser(response.data));
 
             navigate("/list-users", {replace: true});
         } catch (error) {
             console.error('Error adding user:', error.response);
-
         }
     }
 
