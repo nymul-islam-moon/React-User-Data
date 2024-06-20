@@ -4,9 +4,10 @@ import Error from "../pages/Error";
 import ListUsers from "../fetaures/users/ListUsers";
 import AddUsers from "../fetaures/users/AddUsers";
 import EditUsers from "../fetaures/users/EditUsers";
-import Footer from "../layouts/Footer";
+import Footer from "../components/Footer";
 import NavBar from "../layouts/NavBar";
 import Books from "../pages/books/Books";
+import Users from "../pages/users/Users";
 
 const Index = () => {
     return <>
@@ -20,6 +21,7 @@ const Index = () => {
                     <Route path="/list-users" element={<ListUsers />}/>
                     <Route path="/add-users" element={<AddUsers />}/>
                     <Route path="/edit-user" element={<EditUsers />}/>
+                    <Route path="/new-users" element={<Users />}/>
 
                     {/* Books Routes */}
                     <Route path="/books" element={<Books />}/>

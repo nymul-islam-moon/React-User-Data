@@ -152,10 +152,10 @@ nav {
 
 /* Navbar links hover effect */
 .nav-link:hover {
-    background-color: #0073aa; /* WordPress blue color */
+    background-color: #5ac8fa /* WordPress blue color */
 }
 
 /* Active link styling (optional) */
 .nav-link.active {
-    background-color: #005177; /* Darker blue for active link */
+    background-color: #a8a7be /* Darker blue for active link */
 }
