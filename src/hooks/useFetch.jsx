@@ -2,9 +2,10 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 
 
-const useFetch = (url) => {
+const useFetch = ( url, currentPage ) => {
 
     const [data, setData] = useState(null);
+    const [ headers, setHeaders ] = useState(null);
     const [ error, setError ] = useState(null);
     const [ isLoading, setIsLoading ] = useState(true);
 
@@ -12,16 +13,16 @@ const useFetch = (url) => {
         (async () => {
             setIsLoading(true);
             try {
-                const response = await axios.get(`${url}?page=1`, {
+                const response = await axios.get(`${url}?page=${currentPage}`, {
                     headers: {
                         'Content-Type': 'application/json',
                         'X-WP-Nonce': appLocalizer.nonce,
                     },
                 });
                 const headers = response.headers;
+                setHeaders( headers );
                 // setTotalData(parseInt(headers['x-wp-total'], 10));
                 // setTotalPage(parseInt(headers['x-wp-totalpages'], 10));
-                // dispatch(setUsers(response.data));
                 setData(response.data);
                 setIsLoading(false);
             } catch (error) {
@@ -29,9 +30,9 @@ const useFetch = (url) => {
                 console.log(error);
             }
         })();
-    }, []);
+    }, [currentPage]);
 
-    return { data, isLoading, error };
+    return { data, isLoading, error, headers };
 }
 
 export default useFetch;

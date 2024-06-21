@@ -16,16 +16,18 @@ const AddUsers = () => {
     const numberOfUsers = useSelector((state) => state.usersReducer.users.length);
     const url = `${appLocalizer.apiUrl}/rud/v1/users`;
 
+    const data = {
+        name: name,
+        phone: phone,
+        email: email,
+        address: address
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            const response = await axios.post(url, {
-                name: name,
-                phone: phone,
-                email: email,
-                address: address
-            }, {
+            const response = await axios.post(url, data , {
                 headers: {
                     'Content-Type': 'application/json',
                     'X-WP-Nonce': appLocalizer.nonce,

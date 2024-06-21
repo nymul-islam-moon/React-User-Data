@@ -2,20 +2,21 @@ import { useState } from 'react';
 import axios from 'axios';
 
 const useDelete = (url, itemId) => {
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const [ deletedData, setDeletedData ] = useState('');
+    const [ isLoading, setIsLoading ] = useState(false);
+    const [ error, setError ] = useState(null);
 
     const deleteItem = async () => {
         setIsLoading(true);
         try {
-            await axios.delete(`${url}/${itemId}`, {
+            const response = await axios.delete(`${url}/${itemId}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'X-WP-Nonce': appLocalizer.nonce,
                 },
             });
+            setDeletedData(response.data);
             setIsLoading(false);
-            return true;
         } catch (err) {
             setIsLoading(false);
             setError(err);
@@ -23,7 +24,7 @@ const useDelete = (url, itemId) => {
         }
     };
 
-    return { deleteItem, isLoading, error };
+    return { deletedData, isLoading, error };
 };
 
 export default useDelete;
