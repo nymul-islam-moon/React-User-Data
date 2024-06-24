@@ -42,7 +42,7 @@ const Users = () => {
     const handleDelete = async (id) => {
         if (window.confirm('Are you sure you want to delete this user?')) {
             const result = await deleteItem(id);
-            console.log(result);
+            // console.log(result.previous.name);
             if (result) {
                 dispatch(deleteUser(id));
 
@@ -54,6 +54,7 @@ const Users = () => {
                 } else {
                     await fetchData(); // Re-fetch data after delete
                 }
+                toast.error( result.previous.name + ' has deleted successfully');
             }
         }
     };

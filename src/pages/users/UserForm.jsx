@@ -15,7 +15,7 @@ const UserForm = () => {
 
     useEffect(() => {
         if (responseData) {
-            navigate('/list-users');
+            navigate('/users');
         }
     }, [responseData, navigate]);
 
