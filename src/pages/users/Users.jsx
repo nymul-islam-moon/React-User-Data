@@ -3,24 +3,33 @@ import {deleteUser, setUsers} from "../../fetaures/users/UsersSlice";
 import useFetch from "../../hooks/useFetch";
 import {useDispatch, useSelector} from "react-redux";
 import Table from "../../components/Table/Table";
+import useDelete from "../../hooks/useDelete";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const Users = () => {
     const url = `${appLocalizer.apiUrl}/rud/v1/users`;
     const [currentPage, setCurrentPage] = useState(1);
     const [totalUsers, setTotalUsers] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
     const [perPage, setPerPage] = useState(0);
-    const { data, isLoading, error, headers } = useFetch(url, currentPage);
+    const { data, isLoading, error, headers, fetchData } = useFetch(url, currentPage);
+    const { deleteItem, isDeleteLoading, deleteError } = useDelete(url);
     const dispatch = useDispatch();
     const users = useSelector((state) => state.usersReducer.users);
     const [ currentData, setCurrentData ] = useState(0);
     const userColumns = ['Name', 'Email', 'Phone', 'Address', 'Date'];
+    const [ addActionLink, setAddActionLink ] = useState('/create-users');
+    const [ editActionLink, setEditActionLink ] = useState('/edit-users');
 
     useEffect(() => {
         if (data) {
             dispatch(setUsers(data));
             setCurrentData( ( ( currentPage - 1 ) * 10 ) + data.length);
+            console.log('data fetched');
         }
-    }, [data, dispatch]);
+        // console.log(currentPage);
+    }, [data, totalUsers, currentPage]); // if any error found add dispatch here
 
     useEffect(() => {
         if (headers) {
@@ -30,8 +39,23 @@ const Users = () => {
         }
     }, [headers]);
 
-    const handleDelete = (id) => {
-        dispatch(deleteUser(id));
+    const handleDelete = async (id) => {
+        if (window.confirm('Are you sure you want to delete this user?')) {
+            const result = await deleteItem(id);
+            console.log(result);
+            if (result) {
+                dispatch(deleteUser(id));
+
+                const remainder = totalUsers % perPage;
+
+                if (remainder === 1 && currentPage > 1) {
+
+                    setCurrentPage(currentPage - 1);
+                } else {
+                    await fetchData(); // Re-fetch data after delete
+                }
+            }
+        }
     };
 
     const handleCurrentPage = (page) => {
@@ -44,6 +68,8 @@ const Users = () => {
             {!error && users && (
                 <Table
                     title="Users"
+                    addActionLink={addActionLink}
+                    editActionLink={editActionLink}
                     columns={userColumns}
                     data={users}
                     currentData={currentData}
@@ -56,6 +82,7 @@ const Users = () => {
                     handleDelete={handleDelete}
                 />
             )}
+            <ToastContainer />
         </>
     );
 };

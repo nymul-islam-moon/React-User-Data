@@ -1,7 +1,7 @@
 import {Link} from "react-router-dom";
 import React from "react";
 
-const Tbody = ( {columns, isLoading, data} ) => {
+const Tbody = ( {columns, isLoading, data, handleDelete, editActionLink} ) => {
     return <>
         <tbody>
             {isLoading && (
@@ -20,14 +20,14 @@ const Tbody = ( {columns, isLoading, data} ) => {
                         <td key={column} className={`column-${column.toLowerCase()}`}>{item[column.toLowerCase()]}</td>
                     ))}
                     <td className="column-actions">
-                                    <span className="actions">
-                                        <Link to={`/edit-user/${item.id}`}>
-                                            <button className="edit">Edit</button>
-                                        </Link>
-                                        &nbsp;|&nbsp;
+                        <span className="actions">
+                            <Link to={ `${editActionLink}` }>
+                                <button className="edit">Edit</button>
+                            </Link>
+                            &nbsp;|&nbsp;
 
-                                        <button className="delete" onClick={() => handleDelete(item.id)}>Delete</button>
-                                    </span>
+                            <button className="delete" onClick={() => handleDelete(item.id)}>Delete</button>
+                        </span>
                     </td>
                 </tr>
             ))}

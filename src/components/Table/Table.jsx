@@ -4,7 +4,7 @@ import TableNav from "./TableNav";
 import Thead from "./Thead";
 import Tbody from "./Tbody";
 import Pagination from "./Pagination";
-const Table = ({ title, columns, data, isLoading, handleDelete, totalData, totalPages, currentPage, handleCurrentPage, currentData }) => {
+const Table = ({ title, columns, data, isLoading, handleDelete, totalData, totalPages, currentPage, handleCurrentPage, currentData, addActionLink, editActionLink }) => {
 
     const handleNextPage = () => {
         if (currentPage < totalPages) {
@@ -18,12 +18,11 @@ const Table = ({ title, columns, data, isLoading, handleDelete, totalData, total
         }
     };
 
-
     return (
         <div className="wrap">
             <h1 className="wp-heading-inline">{title}</h1>
 
-            <Link to="" className="page-title-action">
+            <Link to={addActionLink} className="page-title-action">
                 Add {title}
             </Link>
 
@@ -33,7 +32,7 @@ const Table = ({ title, columns, data, isLoading, handleDelete, totalData, total
 
                 <Thead columns={columns}/>
 
-                <Tbody columns={columns} isLoading={isLoading} data={data}/>
+                <Tbody columns={columns} isLoading={isLoading} data={data} handleDelete={handleDelete} editActionLink={editActionLink}/>
             </table>
             { totalData && totalData > 10 && (
                 <Pagination currentPage={currentPage} totalPage={totalPages} nextPage={handleNextPage} previousPage={handlePreviousPage}/>

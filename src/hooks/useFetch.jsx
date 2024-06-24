@@ -1,38 +1,36 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-
-const useFetch = ( url, currentPage ) => {
-
+const useFetch = (url, currentPage) => {
     const [data, setData] = useState(null);
-    const [ headers, setHeaders ] = useState(null);
-    const [ error, setError ] = useState(null);
-    const [ isLoading, setIsLoading ] = useState(true);
+    const [headers, setHeaders] = useState(null);
+    const [error, setError] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+
+    const fetchData = async () => {
+        setIsLoading(true);
+        try {
+            const response = await axios.get(`${url}?page=${currentPage}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-WP-Nonce': appLocalizer.nonce,
+                },
+            });
+            setHeaders(response.headers);
+            setData(response.data);
+            setIsLoading(false);
+        } catch (err) {
+            setIsLoading(false);
+            setError(err);
+            console.log(err);
+        }
+    };
 
     useEffect(() => {
-        (async () => {
-            setIsLoading(true);
-            try {
-                const response = await axios.get(`${url}?page=${currentPage}`, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-WP-Nonce': appLocalizer.nonce,
-                    },
-                });
-                const headers = response.headers;
-                setHeaders( headers );
-                // setTotalData(parseInt(headers['x-wp-total'], 10));
-                // setTotalPage(parseInt(headers['x-wp-totalpages'], 10));
-                setData(response.data);
-                setIsLoading(false);
-            } catch (error) {
-                setIsLoading(false);
-                console.log(error);
-            }
-        })();
+        fetchData();
     }, [currentPage]);
 
-    return { data, isLoading, error, headers };
-}
+    return { data, isLoading, error, headers, fetchData };
+};
 
 export default useFetch;

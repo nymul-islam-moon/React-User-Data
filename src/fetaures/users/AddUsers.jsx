@@ -6,9 +6,9 @@ import axios from "axios";
 
 const AddUsers = () => {
 
-    const [name, setName]       = useState("");
-    const [email, setEmail]     = useState("");
-    const [phone, setPhone]     = useState("");
+    const [name, setName]           = useState("");
+    const [email, setEmail]         = useState("");
+    const [phone, setPhone]         = useState("");
     const [address, setAddress]     = useState("");
     const dispatch = useDispatch();
     const navigate = useNavigate();
