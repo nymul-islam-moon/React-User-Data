@@ -8,7 +8,7 @@ import Footer from "../components/Footer";
 import NavBar from "../layouts/NavBar";
 import Books from "../pages/books/Books";
 import Users from "../pages/users/Users";
-import Create from "../pages/users/Create";
+import UserForm from "../pages/users/UserForm";
 
 const Index = () => {
     return <>
@@ -23,8 +23,8 @@ const Index = () => {
                     <Route path="/add-users" element={<AddUsers />}/>
                     <Route path="/edit-user" element={<EditUsers />}/>
                     <Route path="/new-users" element={<Users />}/>
-                    <Route path="/create-users" element={<Create />}/>
-                    <Route path="/edit-users" element={<Create />}/>
+                    <Route path="/create-users" element={<UserForm />}/>
+                    <Route path="/edit-users/" element={<UserForm />}/>
 
                     {/* Books Routes */}
                     <Route path="/books" element={<Books />}/>

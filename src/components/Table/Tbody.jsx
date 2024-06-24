@@ -21,7 +21,7 @@ const Tbody = ( {columns, isLoading, data, handleDelete, editActionLink} ) => {
                     ))}
                     <td className="column-actions">
                         <span className="actions">
-                            <Link to={ `${editActionLink}` }>
+                            <Link to={ editActionLink } state={{ item }}>
                                 <button className="edit">Edit</button>
                             </Link>
                             &nbsp;|&nbsp;

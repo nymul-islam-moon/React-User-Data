@@ -7366,7 +7366,10 @@ const Tbody = ({
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
     className: "actions"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link, {
-    to: `${editActionLink}`
+    to: editActionLink,
+    state: {
+      item
+    }
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     className: "edit"
   }, "Edit")), "\xA0|\xA0", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
@@ -8011,6 +8014,54 @@ const {
 
 /***/ }),
 
+/***/ "./src/hooks/useAction.jsx":
+/*!*********************************!*\
+  !*** ./src/hooks/useAction.jsx ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+
+
+const useAction = url => {
+  const [responseData, setResponseData] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
+  const [actionError, setActionError] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
+  const performAction = async (data, method = 'POST', itemId = null) => {
+    try {
+      const response = await axios__WEBPACK_IMPORTED_MODULE_1___default()({
+        method,
+        url: itemId ? `${url}/${itemId}` : url,
+        data,
+        headers: {
+          'Content-Type': 'application/json',
+          'X-WP-Nonce': appLocalizer.nonce
+        }
+      });
+      setResponseData(response.data);
+      return response.data; // return the response data for further processing
+    } catch (err) {
+      setActionError(err);
+      return false;
+    }
+  };
+  return {
+    performAction,
+    responseData,
+    actionError
+  };
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (useAction);
+
+/***/ }),
+
 /***/ "./src/hooks/useDelete.jsx":
 /*!*********************************!*\
   !*** ./src/hooks/useDelete.jsx ***!
@@ -8296,10 +8347,10 @@ const Books = () => {
 
 /***/ }),
 
-/***/ "./src/pages/users/Create.jsx":
-/*!************************************!*\
-  !*** ./src/pages/users/Create.jsx ***!
-  \************************************/
+/***/ "./src/pages/users/UserForm.jsx":
+/*!**************************************!*\
+  !*** ./src/pages/users/UserForm.jsx ***!
+  \**************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -8311,26 +8362,51 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/dist/react-redux.mjs");
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
+/* harmony import */ var _hooks_useAction__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../hooks/useAction */ "./src/hooks/useAction.jsx");
 
 
 
 
-const Create = () => {
-  const [name, setName] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)("");
-  const [email, setEmail] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)("");
-  const [phone, setPhone] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)("");
-  const [address, setAddress] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)("");
-  const dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useDispatch)();
+const UserForm = () => {
+  const location = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_3__.useLocation)();
+  const user = location.state?.item || {};
+  const [name, setName] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(user.name || '');
+  const [email, setEmail] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(user.email || '');
+  const [phone, setPhone] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(user.phone || '');
+  const [address, setAddress] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(user.address || '');
+  const {
+    performAction,
+    responseData,
+    actionError
+  } = (0,_hooks_useAction__WEBPACK_IMPORTED_MODULE_2__["default"])(`${appLocalizer.apiUrl}/rud/v1/users`);
   const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_3__.useNavigate)();
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    if (responseData) {
+      navigate('/list-users');
+    }
+  }, [responseData, navigate]);
+  const handleSubmit = async e => {
+    e.preventDefault();
+    const data = {
+      name,
+      email,
+      phone,
+      address
+    };
+    const method = user.id ? 'PUT' : 'POST';
+    const itemId = user.id || null;
+    await performAction(data, method, itemId);
+  };
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "wrap"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", {
     className: "wp-heading-inline"
-  }, "Add New User"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("hr", {
+  }, user.id ? 'Edit User' : 'Add New User'), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("hr", {
     className: "wp-header-end"
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("form", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("table", {
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("form", {
+    onSubmit: handleSubmit
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("table", {
     className: "form-table"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tbody", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", {
     scope: "row"
@@ -8341,9 +8417,7 @@ const Create = () => {
     type: "text",
     id: "name",
     value: name,
-    onChange: e => {
-      setName(e.target.value);
-    },
+    onChange: e => setName(e.target.value),
     className: "regular-text",
     required: true
   }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", {
@@ -8355,9 +8429,7 @@ const Create = () => {
     type: "email",
     id: "email",
     value: email,
-    onChange: e => {
-      setEmail(e.target.value);
-    },
+    onChange: e => setEmail(e.target.value),
     className: "regular-text",
     required: true
   }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", {
@@ -8369,9 +8441,7 @@ const Create = () => {
     type: "tel",
     id: "phone",
     value: phone,
-    onChange: e => {
-      setPhone(e.target.value);
-    },
+    onChange: e => setPhone(e.target.value),
     className: "regular-text"
   }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", {
     scope: "row"
@@ -8383,17 +8453,15 @@ const Create = () => {
     className: "regular-text",
     rows: "3",
     value: address,
-    onChange: e => {
-      setAddress(e.target.value);
-    }
+    onChange: e => setAddress(e.target.value)
   }))))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
     className: "submit"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     type: "submit",
     className: "button button-primary"
-  }, "Add User")))));
+  }, user.id ? 'Update User' : 'Add User'))), actionError && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Error: ", actionError.message));
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Create);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (UserForm);
 
 /***/ }),
 
@@ -8530,7 +8598,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _layouts_NavBar__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../layouts/NavBar */ "./src/layouts/NavBar.js");
 /* harmony import */ var _pages_books_Books__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../pages/books/Books */ "./src/pages/books/Books.jsx");
 /* harmony import */ var _pages_users_Users__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../pages/users/Users */ "./src/pages/users/Users.jsx");
-/* harmony import */ var _pages_users_Create__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../pages/users/Create */ "./src/pages/users/Create.jsx");
+/* harmony import */ var _pages_users_UserForm__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../pages/users/UserForm */ "./src/pages/users/UserForm.jsx");
 
 
 
@@ -8563,10 +8631,10 @@ const Index = () => {
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_pages_users_Users__WEBPACK_IMPORTED_MODULE_9__["default"], null)
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_12__.Route, {
     path: "/create-users",
-    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_pages_users_Create__WEBPACK_IMPORTED_MODULE_10__["default"], null)
+    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_pages_users_UserForm__WEBPACK_IMPORTED_MODULE_10__["default"], null)
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_12__.Route, {
-    path: "/edit-users",
-    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_pages_users_Create__WEBPACK_IMPORTED_MODULE_10__["default"], null)
+    path: "/edit-users/",
+    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_pages_users_UserForm__WEBPACK_IMPORTED_MODULE_10__["default"], null)
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_12__.Route, {
     path: "/books",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_pages_books_Books__WEBPACK_IMPORTED_MODULE_8__["default"], null)
