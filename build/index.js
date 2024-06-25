@@ -7850,22 +7850,30 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const Books = () => {
-  // const bookColumns = ['Name', 'Category', 'Author', 'Publish_Date'];
   const bookColumns = {
     'Name': 'name',
     'Category': 'category',
     'Author': 'author',
+    'Rating': 'rating',
     'Publish Date': 'publish_date'
   };
   const bookData = [{
     name: "Life of PI",
     category: "Adventure",
     author: "Yann Martel",
+    rating: 5.5,
     publish_date: "12/12/2023"
   }, {
     name: "JUMANJI",
     category: "Adventure",
     author: "Chris Van Allsburg",
+    rating: 8.0,
+    publish_date: "12/12/2023"
+  }, {
+    name: "Life of PHP",
+    category: "Autobiography",
+    author: "Telyan Marsubag",
+    rating: 6,
     publish_date: "12/12/2023"
   }];
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_Table_Table__WEBPACK_IMPORTED_MODULE_1__["default"], {
