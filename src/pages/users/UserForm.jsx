@@ -102,7 +102,7 @@ const UserForm = () => {
                     <button type="submit" className="button button-primary">{user.id ? 'Update User' : 'Add User'}</button>
                 </p>
             </form>
-            {actionError && <p>Error: {actionError.message}</p>}
+            {actionError && <p>Error: {actionError.response.data.message}</p>}
         </div>
     );
 };

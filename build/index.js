@@ -7873,7 +7873,7 @@ const UserForm = () => {
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     type: "submit",
     className: "button button-primary"
-  }, user.id ? 'Update User' : 'Add User'))), actionError && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Error: ", actionError.message));
+  }, user.id ? 'Update User' : 'Add User'))), actionError && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Error: ", actionError.response.data.message));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (UserForm);
 
