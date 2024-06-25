@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import React from "react";
 
-const Tbody = ({ columns, isLoading, data, handleDelete, editActionLink }) => {
+const Tbody = ({ columns, isLoading, data, handleDelete, editActionLink, isDeleteLoading }) => {
     // Ensure columns is an array
     const columnValues = Array.isArray(columns) ? columns : Object.values(columns);
 
@@ -28,7 +28,7 @@ const Tbody = ({ columns, isLoading, data, handleDelete, editActionLink }) => {
                                 <button className="edit">Edit</button>
                             </Link>
                             &nbsp;|&nbsp;
-                            <button className="delete" onClick={() => handleDelete(item.id)}>Delete</button>
+                            <button className="delete" onClick={() => handleDelete(item.id)}>{isDeleteLoading ? 'Deleting..' : 'Delete'}</button>
                         </span>
                 </td>
             </tr>

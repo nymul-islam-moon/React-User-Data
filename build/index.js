@@ -7291,7 +7291,8 @@ const Table = ({
   handleCurrentPage,
   currentData,
   addActionLink,
-  editActionLink
+  editActionLink,
+  isDeleteLoading
 }) => {
   const handleNextPage = () => {
     if (currentPage < totalPages) {
@@ -7323,7 +7324,8 @@ const Table = ({
     isLoading: isLoading,
     data: data,
     handleDelete: handleDelete,
-    editActionLink: editActionLink
+    editActionLink: editActionLink,
+    isDeleteLoading: isDeleteLoading
   })), totalData && totalData > 10 && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_Pagination__WEBPACK_IMPORTED_MODULE_5__["default"], {
     currentPage: currentPage,
     totalPage: totalPages,
@@ -7447,7 +7449,8 @@ const Tbody = ({
   isLoading,
   data,
   handleDelete,
-  editActionLink
+  editActionLink,
+  isDeleteLoading
 }) => {
   // Ensure columns is an array
   const columnValues = Array.isArray(columns) ? columns : Object.values(columns);
@@ -7483,7 +7486,7 @@ const Tbody = ({
   }, "Edit")), "\xA0|\xA0", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     className: "delete",
     onClick: () => handleDelete(item.id)
-  }, "Delete"))))));
+  }, isDeleteLoading ? 'Deleting..' : 'Delete'))))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Tbody);
 
@@ -7551,6 +7554,8 @@ __webpack_require__.r(__webpack_exports__);
 const initialState = {
   users: []
 };
+
+// actions
 const usersSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createSlice)({
   name: "users",
   initialState,
@@ -8060,7 +8065,7 @@ const Users = () => {
   const handleDelete = async id => {
     if (window.confirm('Are you sure you want to delete this user?')) {
       const result = await deleteItem(id);
-      // console.log(result.previous.name);
+      console.log(result);
       if (result) {
         dispatch((0,_fetaures_users_UsersSlice__WEBPACK_IMPORTED_MODULE_2__.deleteUser)(id));
         const remainder = totalUsers % perPage;
@@ -8070,6 +8075,9 @@ const Users = () => {
           await fetchData(); // Re-fetch data after delete
         }
         react_toastify__WEBPACK_IMPORTED_MODULE_6__.toast.error(result.previous.name + ' has deleted successfully');
+      } else {
+        react_toastify__WEBPACK_IMPORTED_MODULE_6__.toast.error('Data not found');
+        // await fetchData();
       }
     }
   };
@@ -8089,6 +8097,7 @@ const Users = () => {
     perPage: perPage,
     currentPage: currentPage,
     handleCurrentPage: handleCurrentPage,
+    isDeleteLoading: isDeleteLoading,
     handleDelete: handleDelete
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_toastify__WEBPACK_IMPORTED_MODULE_6__.ToastContainer, null));
 };

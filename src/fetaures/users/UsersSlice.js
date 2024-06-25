@@ -5,6 +5,7 @@ const initialState = {
     users: [],
 };
 
+// actions
 export const usersSlice = createSlice({
     name: "users",
     initialState,

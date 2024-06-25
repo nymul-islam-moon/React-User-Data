@@ -42,7 +42,7 @@ const Users = () => {
     const handleDelete = async (id) => {
         if (window.confirm('Are you sure you want to delete this user?')) {
             const result = await deleteItem(id);
-            // console.log(result.previous.name);
+            console.log(result);
             if (result) {
                 dispatch(deleteUser(id));
 
@@ -55,6 +55,9 @@ const Users = () => {
                     await fetchData(); // Re-fetch data after delete
                 }
                 toast.error( result.previous.name + ' has deleted successfully');
+            } else {
+                toast.error('Data not found');
+                // await fetchData();
             }
         }
     };
@@ -80,6 +83,7 @@ const Users = () => {
                     perPage={perPage}
                     currentPage={currentPage}
                     handleCurrentPage={handleCurrentPage}
+                    isDeleteLoading={isDeleteLoading}
                     handleDelete={handleDelete}
                 />
             )}

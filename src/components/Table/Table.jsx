@@ -4,7 +4,7 @@ import TableNav from "./TableNav";
 import Thead from "./Thead";
 import Tbody from "./Tbody";
 import Pagination from "./Pagination";
-const Table = ({ title, columns, data, isLoading, handleDelete, totalData, totalPages, currentPage, handleCurrentPage, currentData, addActionLink, editActionLink }) => {
+const Table = ({ title, columns, data, isLoading, handleDelete, totalData, totalPages, currentPage, handleCurrentPage, currentData, addActionLink, editActionLink, isDeleteLoading }) => {
 
     const handleNextPage = () => {
         if (currentPage < totalPages) {
@@ -32,7 +32,7 @@ const Table = ({ title, columns, data, isLoading, handleDelete, totalData, total
 
                 <Thead columns={columns}/>
 
-                <Tbody columns={columns} isLoading={isLoading} data={data} handleDelete={handleDelete} editActionLink={editActionLink}/>
+                <Tbody columns={columns} isLoading={isLoading} data={data} handleDelete={handleDelete} editActionLink={editActionLink} isDeleteLoading={isDeleteLoading}/>
             </table>
             { totalData && totalData > 10 && (
                 <Pagination currentPage={currentPage} totalPage={totalPages} nextPage={handleNextPage} previousPage={handlePreviousPage}/>
