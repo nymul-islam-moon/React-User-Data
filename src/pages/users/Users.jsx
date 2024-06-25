@@ -6,8 +6,10 @@ import Table from "../../components/Table/Table";
 import useDelete from "../../hooks/useDelete";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {useLocation} from "react-router-dom";
 
 const Users = () => {
+    const location = useLocation(); // only for get the message
     const url = `${appLocalizer.apiUrl}/rud/v1/users`;
     const [currentPage, setCurrentPage] = useState(1);
     const [totalUsers, setTotalUsers] = useState(0);
@@ -26,6 +28,10 @@ const Users = () => {
         if (data) {
             dispatch(setUsers(data));
             setCurrentData( ( ( currentPage - 1 ) * 10 ) + data.length);
+            const message = location.state?.message;
+            if (message) {
+                toast.success(message);
+            }
             console.log('data fetched');
         }
         // console.log(currentPage);

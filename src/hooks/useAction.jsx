@@ -16,7 +16,11 @@ const useAction = (url) => {
                     'X-WP-Nonce': appLocalizer.nonce,
                 },
             });
-            setResponseData(response.data);
+            const result = {
+                ...response.data,
+                created: !itemId
+            };
+            setResponseData(result);
             return response.data; // return the response data for further processing
         } catch (err) {
             setActionError(err);

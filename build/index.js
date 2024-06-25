@@ -7676,7 +7676,11 @@ const useAction = url => {
           'X-WP-Nonce': appLocalizer.nonce
         }
       });
-      setResponseData(response.data);
+      const result = {
+        ...response.data,
+        created: !itemId
+      };
+      setResponseData(result);
       return response.data; // return the response data for further processing
     } catch (err) {
       setActionError(err);
@@ -7968,8 +7972,15 @@ const UserForm = () => {
   const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_4__.useNavigate)();
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (responseData) {
-      // console.log(responseData);
-      navigate('/users');
+      const message = responseData.created ? 'User created successfully' : 'User updated successfully';
+      navigate('/users', {
+        state: {
+          message
+        }
+      });
+    }
+    if (actionError) {
+      console.log(actionError);
     }
   }, [responseData, navigate]);
   const handleSubmit = async e => {
@@ -8044,11 +8055,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _fetaures_users_UsersSlice__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../fetaures/users/UsersSlice */ "./src/fetaures/users/UsersSlice.js");
 /* harmony import */ var _hooks_useFetch__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../hooks/useFetch */ "./src/hooks/useFetch.jsx");
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/dist/react-redux.mjs");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/dist/react-redux.mjs");
 /* harmony import */ var _components_Table_Table__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../components/Table/Table */ "./src/components/Table/Table.jsx");
 /* harmony import */ var _hooks_useDelete__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../hooks/useDelete */ "./src/hooks/useDelete.jsx");
 /* harmony import */ var react_toastify__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-toastify */ "./node_modules/react-toastify/dist/react-toastify.esm.mjs");
 /* harmony import */ var react_toastify_dist_ReactToastify_css__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-toastify/dist/ReactToastify.css */ "./node_modules/react-toastify/dist/ReactToastify.css");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
+
 
 
 
@@ -8059,6 +8072,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const Users = () => {
+  const location = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_8__.useLocation)(); // only for get the message
   const url = `${appLocalizer.apiUrl}/rud/v1/users`;
   const [currentPage, setCurrentPage] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(1);
   const [totalUsers, setTotalUsers] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(0);
@@ -8076,8 +8090,8 @@ const Users = () => {
     isDeleteLoading,
     deleteError
   } = (0,_hooks_useDelete__WEBPACK_IMPORTED_MODULE_5__["default"])(url);
-  const dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_8__.useDispatch)();
-  const users = (0,react_redux__WEBPACK_IMPORTED_MODULE_8__.useSelector)(state => state.usersReducer.users);
+  const dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_9__.useDispatch)();
+  const users = (0,react_redux__WEBPACK_IMPORTED_MODULE_9__.useSelector)(state => state.usersReducer.users);
   const [currentData, setCurrentData] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(0);
   const [addActionLink, setAddActionLink] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('/create-users');
   const [editActionLink, setEditActionLink] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('/edit-users');
@@ -8092,6 +8106,10 @@ const Users = () => {
     if (data) {
       dispatch((0,_fetaures_users_UsersSlice__WEBPACK_IMPORTED_MODULE_2__.setUsers)(data));
       setCurrentData((currentPage - 1) * 10 + data.length);
+      const message = location.state?.message;
+      if (message) {
+        react_toastify__WEBPACK_IMPORTED_MODULE_6__.toast.success(message);
+      }
       console.log('data fetched');
     }
     // console.log(currentPage);

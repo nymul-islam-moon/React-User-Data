@@ -17,8 +17,11 @@ const UserForm = () => {
 
     useEffect(() => {
         if (responseData) {
-            // console.log(responseData);
-            navigate('/users');
+            const message = responseData.created ? 'User created successfully' : 'User updated successfully';
+            navigate('/users', { state: { message } });
+        }
+        if (actionError) {
+            console.log(actionError);
         }
     }, [responseData, navigate]);
 
