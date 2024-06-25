@@ -8073,6 +8073,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const Users = () => {
   const location = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_8__.useLocation)(); // only for get the message
+  const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_8__.useNavigate)(); // only for get the message
   const url = `${appLocalizer.apiUrl}/rud/v1/users`;
   const [currentPage, setCurrentPage] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(1);
   const [totalUsers, setTotalUsers] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(0);
@@ -8106,22 +8107,25 @@ const Users = () => {
     if (data) {
       dispatch((0,_fetaures_users_UsersSlice__WEBPACK_IMPORTED_MODULE_2__.setUsers)(data));
       setCurrentData((currentPage - 1) * 10 + data.length);
-      const message = location.state?.message;
-      if (message) {
-        react_toastify__WEBPACK_IMPORTED_MODULE_6__.toast.success(message);
+      if (headers) {
+        setTotalUsers(parseInt(headers['x-wp-total'], 10));
+        setTotalPages(parseInt(headers['x-wp-totalpages'], 10));
+        setPerPage(parseInt(headers['x-wp-perpage'], 10));
       }
       console.log('data fetched');
     }
-    // console.log(currentPage);
-  }, [data, totalUsers, currentPage]); // if any error found add dispatch here
-
-  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    if (headers) {
-      setTotalUsers(parseInt(headers['x-wp-total'], 10));
-      setTotalPages(parseInt(headers['x-wp-totalpages'], 10));
-      setPerPage(parseInt(headers['x-wp-perpage'], 10));
+    if (location.state?.message) {
+      react_toastify__WEBPACK_IMPORTED_MODULE_6__.toast.success(location.state.message);
+      // Clear the message after displaying it
+      navigate(location.pathname, {
+        replace: true,
+        state: {}
+      });
     }
-  }, [headers]);
+
+    // console.log(currentPage);
+  }, [data]); // if any error found add dispatch here
+
   const handleDelete = async id => {
     if (window.confirm('Are you sure you want to delete this user?')) {
       const result = await deleteItem(id);
