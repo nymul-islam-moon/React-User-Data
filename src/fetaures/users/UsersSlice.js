@@ -16,22 +16,6 @@ export const usersSlice = createSlice({
             state.users = action.payload;
         },
 
-        // add a new user
-        addUser: (state, action) => {
-            state.users.push(action.payload);
-        },
-
-        // update an existing user
-        updateUser: (state, action) => {
-            const { id, name, email, phone, address } = action.payload;
-            const userIndex = state.users.findIndex((user) => user.id === id);
-
-            if (userIndex !== -1) {
-                state.users[userIndex] = { id, name, email, phone, address };
-            }
-        },
-
-
         // delete a user by id
         deleteUser: (state, action) => {
             const id = action.payload;
@@ -41,6 +25,6 @@ export const usersSlice = createSlice({
 });
 
 // export actions and reducer
-export const { addUser, deleteUser, updateUser, setUsers } = usersSlice.actions;
+export const { deleteUser, setUsers } = usersSlice.actions;
 
 export default usersSlice.reducer;

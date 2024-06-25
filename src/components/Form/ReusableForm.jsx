@@ -1,7 +1,7 @@
 import React from 'react';
 import FormField from './FormField';
 
-const ReusableForm = ({ title, fields, handleSubmit, buttonText, actionError }) => {
+const ReusableForm = ({ title, fields, handleSubmit, buttonText, actionError, buttonType }) => {
     return (
         <div className="wrap">
             <h1 className="wp-heading-inline">{title}</h1>
@@ -23,7 +23,7 @@ const ReusableForm = ({ title, fields, handleSubmit, buttonText, actionError }) 
                     </tbody>
                 </table>
                 <p className="submit">
-                    <button type="submit" className="button button-primary">{buttonText}</button>
+                    <button type={buttonType} className="button button-primary">{buttonText}</button>
                 </p>
             </form>
             {actionError && <p>Error: {actionError.response.data.message}</p>}

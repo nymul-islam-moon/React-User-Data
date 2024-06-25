@@ -7024,13 +7024,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.modern.mjs");
+/* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.modern.mjs");
 /* harmony import */ var _fetaures_users_UsersSlice__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../fetaures/users/UsersSlice */ "./src/fetaures/users/UsersSlice.js");
+/* harmony import */ var _fetaures_books_BooksSlice__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../fetaures/books/BooksSlice */ "./src/fetaures/books/BooksSlice.jsx");
 
 
-const store = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.configureStore)({
+
+const store = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_2__.configureStore)({
   reducer: {
-    usersReducer: _fetaures_users_UsersSlice__WEBPACK_IMPORTED_MODULE_0__["default"]
+    usersReducer: _fetaures_users_UsersSlice__WEBPACK_IMPORTED_MODULE_0__["default"],
+    booksReducer: _fetaures_books_BooksSlice__WEBPACK_IMPORTED_MODULE_1__["default"]
   }
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (store);
@@ -7171,7 +7174,8 @@ const ReusableForm = ({
   fields,
   handleSubmit,
   buttonText,
-  actionError
+  actionError,
+  buttonType
 }) => {
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "wrap"
@@ -7194,7 +7198,7 @@ const ReusableForm = ({
   })))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
     className: "submit"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
-    type: "submit",
+    type: buttonType,
     className: "button button-primary"
   }, buttonText))), actionError && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Error: ", actionError.response.data.message));
 };
@@ -7224,8 +7228,13 @@ const Pagination = props => {
     currentPage,
     totalPage,
     previousPage,
-    nextPage
+    nextPage,
+    pageClick
   } = props;
+  const pageNumbers = [];
+  for (let i = 1; i <= totalPage; i++) {
+    pageNumbers.push(i);
+  }
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("nav", {
     className: "pagination"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("ul", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", {
@@ -7237,7 +7246,17 @@ const Pagination = props => {
       e.preventDefault();
       previousPage();
     }
-  }, "\xAB Previous")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", {
+  }, "\xAB Previous")), pageNumbers.map(number => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", {
+    key: number,
+    className: `page-item ${currentPage === number ? 'active' : ''}`
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
+    href: "#",
+    className: "page-link",
+    onClick: e => {
+      e.preventDefault();
+      pageClick(number);
+    }
+  }, number))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", {
     className: `page-item ${currentPage === totalPage ? 'disabled' : ''}`
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
     href: "#",
@@ -7304,6 +7323,9 @@ const Table = ({
       handleCurrentPage(currentPage - 1);
     }
   };
+  const handlePageClick = number => {
+    handleCurrentPage(currentPage = number);
+  };
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "wrap"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", {
@@ -7325,12 +7347,14 @@ const Table = ({
     data: data,
     handleDelete: handleDelete,
     editActionLink: editActionLink,
-    isDeleteLoading: isDeleteLoading
+    isDeleteLoading: isDeleteLoading,
+    handlePageClick: handlePageClick
   })), totalData && totalData > 10 && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_Pagination__WEBPACK_IMPORTED_MODULE_5__["default"], {
     currentPage: currentPage,
     totalPage: totalPages,
     nextPage: handleNextPage,
-    previousPage: handlePreviousPage
+    previousPage: handlePreviousPage,
+    pageClick: handlePageClick
   }));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Table);
@@ -7461,7 +7485,14 @@ const Tbody = ({
       fontWeight: 'bold',
       fontSize: '1.2em'
     }
-  }, "Loading...")), data.map(item => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", {
+  }, "Loading...")), !isLoading && data.length === 0 && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
+    colSpan: columnValues.length + 2,
+    style: {
+      textAlign: 'center',
+      fontWeight: 'bold',
+      fontSize: '1.2em'
+    }
+  }, "No Data Found")), data.map(item => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", {
     key: item.id
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", {
     scope: "row",
@@ -7531,6 +7562,41 @@ const Thead = ({
 
 /***/ }),
 
+/***/ "./src/fetaures/books/BooksSlice.jsx":
+/*!*******************************************!*\
+  !*** ./src/fetaures/books/BooksSlice.jsx ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   booksSlice: () => (/* binding */ booksSlice),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   setBooks: () => (/* binding */ setBooks)
+/* harmony export */ });
+/* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.modern.mjs");
+
+const initialState = {
+  books: []
+};
+const booksSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createSlice)({
+  name: 'books',
+  initialState,
+  reducers: {
+    //Fetch Books
+    setBooks: (state, action) => {
+      state.books = action.payload;
+    }
+  }
+});
+const {
+  setBooks
+} = booksSlice.actions;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (booksSlice.reducer);
+
+/***/ }),
+
 /***/ "./src/fetaures/users/UsersSlice.js":
 /*!******************************************!*\
   !*** ./src/fetaures/users/UsersSlice.js ***!
@@ -7540,11 +7606,9 @@ const Thead = ({
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   addUser: () => (/* binding */ addUser),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
 /* harmony export */   deleteUser: () => (/* binding */ deleteUser),
 /* harmony export */   setUsers: () => (/* binding */ setUsers),
-/* harmony export */   updateUser: () => (/* binding */ updateUser),
 /* harmony export */   usersSlice: () => (/* binding */ usersSlice)
 /* harmony export */ });
 /* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.modern.mjs");
@@ -7564,30 +7628,6 @@ const usersSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createSlice)
     setUsers: (state, action) => {
       state.users = action.payload;
     },
-    // add a new user
-    addUser: (state, action) => {
-      state.users.push(action.payload);
-    },
-    // update an existing user
-    updateUser: (state, action) => {
-      const {
-        id,
-        name,
-        email,
-        phone,
-        address
-      } = action.payload;
-      const userIndex = state.users.findIndex(user => user.id === id);
-      if (userIndex !== -1) {
-        state.users[userIndex] = {
-          id,
-          name,
-          email,
-          phone,
-          address
-        };
-      }
-    },
     // delete a user by id
     deleteUser: (state, action) => {
       const id = action.payload;
@@ -7598,9 +7638,7 @@ const usersSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createSlice)
 
 // export actions and reducer
 const {
-  addUser,
   deleteUser,
-  updateUser,
   setUsers
 } = usersSlice.actions;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (usersSlice.reducer);
@@ -7921,6 +7959,7 @@ const UserForm = () => {
   const [email, setEmail] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(user.email || '');
   const [phone, setPhone] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(user.phone || '');
   const [address, setAddress] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(user.address || '');
+  const [buttonType, setButtonType] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('submit');
   const {
     performAction,
     responseData,
@@ -7929,11 +7968,13 @@ const UserForm = () => {
   const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_4__.useNavigate)();
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (responseData) {
+      // console.log(responseData);
       navigate('/users');
     }
   }, [responseData, navigate]);
   const handleSubmit = async e => {
     e.preventDefault();
+    setButtonType('button');
     const data = {
       name,
       email,
@@ -7978,6 +8019,7 @@ const UserForm = () => {
     fields: fields,
     handleSubmit: handleSubmit,
     buttonText: user.id ? 'Update User' : 'Add User',
+    buttonType: buttonType,
     actionError: actionError
   });
 };

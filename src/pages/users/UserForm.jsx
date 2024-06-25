@@ -10,18 +10,21 @@ const UserForm = () => {
     const [email, setEmail] = useState(user.email || '');
     const [phone, setPhone] = useState(user.phone || '');
     const [address, setAddress] = useState(user.address || '');
+    const [ buttonType, setButtonType ] = useState('submit');
 
     const { performAction, responseData, actionError } = useAction(`${appLocalizer.apiUrl}/rud/v1/users`);
     const navigate = useNavigate();
 
     useEffect(() => {
         if (responseData) {
+            // console.log(responseData);
             navigate('/users');
         }
     }, [responseData, navigate]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setButtonType('button');
         const data = { name, email, phone, address };
         const method = user.id ? 'PUT' : 'POST';
         const itemId = user.id || null;
@@ -69,6 +72,7 @@ const UserForm = () => {
             fields={fields}
             handleSubmit={handleSubmit}
             buttonText={user.id ? 'Update User' : 'Add User'}
+            buttonType={buttonType}
             actionError={actionError}
         />
     );

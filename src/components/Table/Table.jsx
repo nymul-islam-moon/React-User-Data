@@ -18,6 +18,10 @@ const Table = ({ title, columns, data, isLoading, handleDelete, totalData, total
         }
     };
 
+    const handlePageClick = (number) => {
+        handleCurrentPage(currentPage = number);
+    }
+
     return (
         <div className="wrap">
             <h1 className="wp-heading-inline">{title}</h1>
@@ -31,11 +35,10 @@ const Table = ({ title, columns, data, isLoading, handleDelete, totalData, total
             <table className="wp-list-table widefat fixed striped">
 
                 <Thead columns={columns}/>
-
-                <Tbody columns={columns} isLoading={isLoading} data={data} handleDelete={handleDelete} editActionLink={editActionLink} isDeleteLoading={isDeleteLoading}/>
+                <Tbody columns={columns} isLoading={isLoading} data={data} handleDelete={handleDelete} editActionLink={editActionLink} isDeleteLoading={isDeleteLoading} handlePageClick={handlePageClick}/>
             </table>
             { totalData && totalData > 10 && (
-                <Pagination currentPage={currentPage} totalPage={totalPages} nextPage={handleNextPage} previousPage={handlePreviousPage}/>
+                <Pagination currentPage={currentPage} totalPage={totalPages} nextPage={handleNextPage} previousPage={handlePreviousPage} pageClick={handlePageClick}/>
             ) }
         </div>
     );

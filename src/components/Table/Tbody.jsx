@@ -7,20 +7,29 @@ const Tbody = ({ columns, isLoading, data, handleDelete, editActionLink, isDelet
 
     return (
         <tbody>
-        {isLoading && (
+        { isLoading && (
             <tr>
                 <td colSpan={columnValues.length + 2} style={{ textAlign: 'center', fontWeight: 'bold', fontSize: '1.2em' }}>
                     Loading...
                 </td>
             </tr>
         )}
-        {data.map((item) => (
+
+        { ! isLoading && data.length === 0 && (
+            <tr>
+                <td colSpan={columnValues.length + 2} style={{ textAlign: 'center', fontWeight: 'bold', fontSize: '1.2em' }}>
+                    No Data Found
+                </td>
+            </tr>
+        )}
+
+        { data.map( ( item ) => (
             <tr key={item.id}>
                 <th scope="row" className="check-column">
                     <input type="checkbox" value={item.id} />
                 </th>
-                {columnValues.map((column) => (
-                    <td key={column} className={`column-${column.toLowerCase()}`}>{item[column.toLowerCase()]}</td>
+                { columnValues.map( ( column ) => (
+                    <td key={ column } className={`column-${column.toLowerCase()}`}>{item[column.toLowerCase()]}</td>
                 ))}
                 <td className="column-actions">
                         <span className="actions">
