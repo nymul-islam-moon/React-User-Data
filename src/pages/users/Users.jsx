@@ -18,9 +18,9 @@ const Users = () => {
     const dispatch = useDispatch();
     const users = useSelector((state) => state.usersReducer.users);
     const [ currentData, setCurrentData ] = useState(0);
-    const userColumns = ['Name', 'Email', 'Phone', 'Address', 'Date'];
     const [ addActionLink, setAddActionLink ] = useState('/create-users');
     const [ editActionLink, setEditActionLink ] = useState('/edit-users');
+    const userColumns = {'Name': 'name', 'Email': 'email', 'Phone': 'phone', 'Address': 'address', 'Date': 'date'};
 
     useEffect(() => {
         if (data) {

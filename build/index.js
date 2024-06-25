@@ -7096,6 +7096,112 @@ const Footer = () => {
 
 /***/ }),
 
+/***/ "./src/components/Form/FormField.jsx":
+/*!*******************************************!*\
+  !*** ./src/components/Form/FormField.jsx ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+
+
+const FormField = ({
+  label,
+  name,
+  type,
+  value,
+  onChange,
+  required
+}) => {
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", {
+    scope: "row"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
+    htmlFor: name
+  }, label)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", null, type === 'textarea' ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("textarea", {
+    name: name,
+    id: name,
+    className: "regular-text",
+    rows: "3",
+    value: value,
+    onChange: onChange,
+    required: required
+  }) : (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+    name: name,
+    type: type,
+    id: name,
+    value: value,
+    onChange: onChange,
+    className: "regular-text",
+    required: required
+  })));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (FormField);
+
+/***/ }),
+
+/***/ "./src/components/Form/ReusableForm.jsx":
+/*!**********************************************!*\
+  !*** ./src/components/Form/ReusableForm.jsx ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _FormField__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./FormField */ "./src/components/Form/FormField.jsx");
+
+
+
+const ReusableForm = ({
+  title,
+  fields,
+  handleSubmit,
+  buttonText,
+  actionError
+}) => {
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "wrap"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", {
+    className: "wp-heading-inline"
+  }, title), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("hr", {
+    className: "wp-header-end"
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("form", {
+    onSubmit: handleSubmit
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("table", {
+    className: "form-table"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tbody", null, fields.map(field => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_FormField__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    key: field.name,
+    label: field.label,
+    name: field.name,
+    type: field.type,
+    value: field.value,
+    onChange: field.onChange,
+    required: field.required
+  })))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+    className: "submit"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    type: "submit",
+    className: "button button-primary"
+  }, buttonText))), actionError && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Error: ", actionError.response.data.message));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ReusableForm);
+
+/***/ }),
+
 /***/ "./src/components/Table/Pagination.jsx":
 /*!*********************************************!*\
   !*** ./src/components/Table/Pagination.jsx ***!
@@ -7343,8 +7449,10 @@ const Tbody = ({
   handleDelete,
   editActionLink
 }) => {
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tbody", null, isLoading && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
-    colSpan: "7",
+  // Ensure columns is an array
+  const columnValues = Array.isArray(columns) ? columns : Object.values(columns);
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tbody", null, isLoading && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
+    colSpan: columnValues.length + 2,
     style: {
       textAlign: 'center',
       fontWeight: 'bold',
@@ -7358,7 +7466,7 @@ const Tbody = ({
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
     type: "checkbox",
     value: item.id
-  })), columns.map(column => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
+  })), columnValues.map(column => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
     key: column,
     className: `column-${column.toLowerCase()}`
   }, item[column.toLowerCase()])), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
@@ -7375,7 +7483,7 @@ const Tbody = ({
   }, "Edit")), "\xA0|\xA0", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     className: "delete",
     onClick: () => handleDelete(item.id)
-  }, "Delete")))))));
+  }, "Delete"))))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Tbody);
 
@@ -7401,15 +7509,16 @@ __webpack_require__.r(__webpack_exports__);
 const Thead = ({
   columns
 }) => {
+  const columnKeys = Object.keys(columns);
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("thead", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
     id: "cb",
     className: "manage-column column-cb check-column"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
     type: "checkbox"
-  })), columns.map((column, index) => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", {
+  })), columnKeys.map((column, index) => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", {
     key: index,
     scope: "col",
-    className: `manage-column column-${column.toLowerCase()}`
+    className: `manage-column column-${columns[column].toLowerCase()}`
   }, column)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", {
     scope: "col",
     className: "manage-column column-actions"
@@ -7741,15 +7850,23 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const Books = () => {
-  const bookColumns = ['Name', 'Category', 'Author'];
+  // const bookColumns = ['Name', 'Category', 'Author', 'Publish_Date'];
+  const bookColumns = {
+    'Name': 'name',
+    'Category': 'category',
+    'Author': 'author',
+    'Publish Date': 'publish_date'
+  };
   const bookData = [{
     name: "Life of PI",
     category: "Adventure",
-    author: "Yann Martel"
+    author: "Yann Martel",
+    publish_date: "12/12/2023"
   }, {
     name: "JUMANJI",
     category: "Adventure",
-    author: "Chris Van Allsburg"
+    author: "Chris Van Allsburg",
+    publish_date: "12/12/2023"
   }];
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_Table_Table__WEBPACK_IMPORTED_MODULE_1__["default"], {
     title: "Books",
@@ -7776,14 +7893,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
 /* harmony import */ var _hooks_useAction__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../hooks/useAction */ "./src/hooks/useAction.jsx");
+/* harmony import */ var _components_Form_ReusableForm__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../components/Form/ReusableForm */ "./src/components/Form/ReusableForm.jsx");
+
 
 
 
 
 const UserForm = () => {
-  const location = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_3__.useLocation)();
+  const location = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_4__.useLocation)();
   const user = location.state?.item || {};
   const [name, setName] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(user.name || '');
   const [email, setEmail] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(user.email || '');
@@ -7794,7 +7913,7 @@ const UserForm = () => {
     responseData,
     actionError
   } = (0,_hooks_useAction__WEBPACK_IMPORTED_MODULE_2__["default"])(`${appLocalizer.apiUrl}/rud/v1/users`);
-  const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_3__.useNavigate)();
+  const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_4__.useNavigate)();
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (responseData) {
       navigate('/users');
@@ -7812,68 +7931,42 @@ const UserForm = () => {
     const itemId = user.id || null;
     await performAction(data, method, itemId);
   };
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "wrap"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", {
-    className: "wp-heading-inline"
-  }, user.id ? 'Edit User' : 'Add New User'), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("hr", {
-    className: "wp-header-end"
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("form", {
-    onSubmit: handleSubmit
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("table", {
-    className: "form-table"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tbody", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", {
-    scope: "row"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
-    htmlFor: "name"
-  }, "Name")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
-    name: "name",
-    type: "text",
-    id: "name",
+  const fields = [{
+    label: 'Name',
+    name: 'name',
+    type: 'text',
     value: name,
     onChange: e => setName(e.target.value),
-    className: "regular-text",
     required: true
-  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", {
-    scope: "row"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
-    htmlFor: "email"
-  }, "Email")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
-    name: "email",
-    type: "email",
-    id: "email",
+  }, {
+    label: 'Email',
+    name: 'email',
+    type: 'email',
     value: email,
     onChange: e => setEmail(e.target.value),
-    className: "regular-text",
     required: true
-  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", {
-    scope: "row"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
-    htmlFor: "phone"
-  }, "Phone")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
-    name: "phone",
-    type: "tel",
-    id: "phone",
+  }, {
+    label: 'Phone',
+    name: 'phone',
+    type: 'tel',
     value: phone,
     onChange: e => setPhone(e.target.value),
-    className: "regular-text"
-  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", {
-    scope: "row"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
-    htmlFor: "address"
-  }, "Address")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("textarea", {
-    name: "address",
-    id: "address",
-    className: "regular-text",
-    rows: "3",
+    required: false
+  }, {
+    label: 'Address',
+    name: 'address',
+    type: 'textarea',
     value: address,
-    onChange: e => setAddress(e.target.value)
-  }))))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
-    className: "submit"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
-    type: "submit",
-    className: "button button-primary"
-  }, user.id ? 'Update User' : 'Add User'))), actionError && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Error: ", actionError.response.data.message));
+    onChange: e => setAddress(e.target.value),
+    required: false
+  }];
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_Form_ReusableForm__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    title: user.id ? 'Edit User' : 'Add New User',
+    fields: fields,
+    handleSubmit: handleSubmit,
+    buttonText: user.id ? 'Update User' : 'Add User',
+    actionError: actionError
+  });
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (UserForm);
 
@@ -7931,9 +8024,15 @@ const Users = () => {
   const dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_8__.useDispatch)();
   const users = (0,react_redux__WEBPACK_IMPORTED_MODULE_8__.useSelector)(state => state.usersReducer.users);
   const [currentData, setCurrentData] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(0);
-  const userColumns = ['Name', 'Email', 'Phone', 'Address', 'Date'];
   const [addActionLink, setAddActionLink] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('/create-users');
   const [editActionLink, setEditActionLink] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('/edit-users');
+  const userColumns = {
+    'Name': 'name',
+    'Email': 'email',
+    'Phone': 'phone',
+    'Address': 'address',
+    'Date': 'date'
+  };
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (data) {
       dispatch((0,_fetaures_users_UsersSlice__WEBPACK_IMPORTED_MODULE_2__.setUsers)(data));
