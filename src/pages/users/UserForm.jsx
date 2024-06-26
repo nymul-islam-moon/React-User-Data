@@ -32,6 +32,7 @@ const UserForm = () => {
         const method = user.id ? 'PUT' : 'POST';
         const itemId = user.id || null;
         await performAction(data, method, itemId);
+        setButtonType('submit');
     };
 
     const fields = [

@@ -4,8 +4,7 @@ import useFetch from "../../hooks/useFetch";
 import {useDispatch, useSelector} from "react-redux";
 import Table from "../../components/Table/Table";
 import useDelete from "../../hooks/useDelete";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import {useLocation, useNavigate} from "react-router-dom";
 
 const Users = () => {
@@ -21,20 +20,19 @@ const Users = () => {
     const dispatch = useDispatch();
     const users = useSelector((state) => state.usersReducer.users);
     const [ currentData, setCurrentData ] = useState(0);
-    const [ addActionLink, setAddActionLink ] = useState('/create-users');
-    const [ editActionLink, setEditActionLink ] = useState('/edit-users');
     const userColumns = {'Name': 'name', 'Email': 'email', 'Phone': 'phone', 'Address': 'address', 'Date': 'date'};
 
     useEffect(() => {
         if (data) {
             dispatch(setUsers(data));
             setCurrentData( ( ( currentPage - 1 ) * 10 ) + data.length);
-            if (headers) {
-                setTotalUsers(parseInt(headers['x-wp-total'], 10));
-                setTotalPages(parseInt(headers['x-wp-totalpages'], 10));
-                setPerPage(parseInt(headers['x-wp-perpage'], 10));
-            }
+
             console.log('data fetched');
+        }
+        if (headers) {
+            setTotalUsers(parseInt(headers['x-wp-total'], 10));
+            setTotalPages(parseInt(headers['x-wp-totalpages'], 10));
+            setPerPage(parseInt(headers['x-wp-perpage'], 10));
         }
 
         if (location.state?.message) {
@@ -42,9 +40,7 @@ const Users = () => {
             // Clear the message after displaying it
             navigate(location.pathname, { replace: true, state: {} });
         }
-
-        // console.log(currentPage);
-    }, [data]); // if any error found add dispatch here
+    }, [data, dispatch]); // if any error found add dispatch here
 
     const handleDelete = async (ids) => {
         if (window.confirm('Are you sure you want to delete the selected users?')) {
@@ -58,7 +54,7 @@ const Users = () => {
                 }
 
                 const remainder = (totalUsers - (Array.isArray(ids) ? ids.length : 1)) % perPage;
-                
+
                 if (remainder === 0 && currentPage > 1) {
                     setCurrentPage(currentPage - 1);
                 } else {
@@ -88,8 +84,8 @@ const Users = () => {
             {!error && users && (
                 <Table
                     title="Users"
-                    addActionLink={addActionLink}
-                    editActionLink={editActionLink}
+                    addActionLink="/create-users"
+                    editActionLink="/edit-users"
                     columns={userColumns}
                     data={users}
                     currentData={currentData}
@@ -104,7 +100,6 @@ const Users = () => {
                     handleBulkAction={handleBulkAction}
                 />
             )}
-            <ToastContainer />
         </>
     );
 };

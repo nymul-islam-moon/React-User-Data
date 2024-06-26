@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 
 const useFetch = (url, currentPage) => {
@@ -7,7 +7,7 @@ const useFetch = (url, currentPage) => {
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 
-    const fetchData = async () => {
+    const fetchData = useCallback(async () => {
         setIsLoading(true);
         try {
             const response = await axios.get(`${url}?page=${currentPage}`, {
@@ -22,13 +22,13 @@ const useFetch = (url, currentPage) => {
         } catch (err) {
             setIsLoading(false);
             setError(err);
-            console.log(err);
+            console.error(err);
         }
-    };
+    }, [url, currentPage]);
 
     useEffect(() => {
         fetchData();
-    }, [currentPage]);
+    }, [fetchData]);
 
     return { data, isLoading, error, headers, fetchData };
 };
