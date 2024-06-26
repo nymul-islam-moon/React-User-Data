@@ -7313,6 +7313,25 @@ const Table = ({
   editActionLink,
   isDeleteLoading
 }) => {
+  const [selectedItems, setSelectedItems] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]);
+  const [isAllSelected, setIsAllSelected] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false);
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    setIsAllSelected(data.length > 0 && selectedItems.length === data.length);
+  }, [selectedItems, data]);
+  const handleSelectAll = () => {
+    if (isAllSelected) {
+      setSelectedItems([]);
+    } else {
+      setSelectedItems(data.map(item => item.id));
+    }
+  };
+  const handleSelectItem = id => {
+    if (selectedItems.includes(id)) {
+      setSelectedItems(selectedItems.filter(itemId => itemId !== id));
+    } else {
+      setSelectedItems([...selectedItems, id]);
+    }
+  };
   const handleNextPage = () => {
     if (currentPage < totalPages) {
       handleCurrentPage(currentPage + 1);
@@ -7340,7 +7359,9 @@ const Table = ({
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("table", {
     className: "wp-list-table widefat fixed striped"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_Thead__WEBPACK_IMPORTED_MODULE_3__["default"], {
-    columns: columns
+    columns: columns,
+    isAllSelected: isAllSelected,
+    onSelectAll: handleSelectAll
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_Tbody__WEBPACK_IMPORTED_MODULE_4__["default"], {
     columns: columns,
     isLoading: isLoading,
@@ -7348,7 +7369,9 @@ const Table = ({
     handleDelete: handleDelete,
     editActionLink: editActionLink,
     isDeleteLoading: isDeleteLoading,
-    handlePageClick: handlePageClick
+    handlePageClick: handlePageClick,
+    selectedItems: selectedItems,
+    onSelectItem: handleSelectItem
   })), totalData && totalData > 10 && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_Pagination__WEBPACK_IMPORTED_MODULE_5__["default"], {
     currentPage: currentPage,
     totalPage: totalPages,
@@ -7474,7 +7497,9 @@ const Tbody = ({
   data,
   handleDelete,
   editActionLink,
-  isDeleteLoading
+  isDeleteLoading,
+  selectedItems,
+  onSelectItem
 }) => {
   // Ensure columns is an array
   const columnValues = Array.isArray(columns) ? columns : Object.values(columns);
@@ -7494,12 +7519,13 @@ const Tbody = ({
     }
   }, "No Data Found")), data.map(item => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", {
     key: item.id
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
     scope: "row",
-    className: "check-column"
+    className: "user-checkbox"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
     type: "checkbox",
-    value: item.id
+    checked: selectedItems.includes(item.id),
+    onChange: () => onSelectItem(item.id)
   })), columnValues.map(column => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
     key: column,
     className: `column-${column.toLowerCase()}`
@@ -7541,14 +7567,18 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const Thead = ({
-  columns
+  columns,
+  isAllSelected,
+  onSelectAll
 }) => {
   const columnKeys = Object.keys(columns);
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("thead", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
     id: "cb",
-    className: "manage-column column-cb check-column"
+    className: "check-column"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
-    type: "checkbox"
+    type: "checkbox",
+    checked: isAllSelected,
+    onChange: onSelectAll
   })), columnKeys.map((column, index) => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", {
     key: index,
     scope: "col",

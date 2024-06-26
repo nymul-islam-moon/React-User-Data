@@ -1,14 +1,18 @@
 import React from "react";
 
-const Thead = ({columns}) => {
+const Thead = ({columns, isAllSelected, onSelectAll}) => {
 
     const columnKeys = Object.keys(columns);
 
     return <>
         <thead>
             <tr>
-                <td id="cb" className="manage-column column-cb check-column">
-                    <input type="checkbox"/>
+                <td id="cb" className="check-column">
+                    <input
+                        type="checkbox"
+                        checked={isAllSelected}
+                        onChange={onSelectAll}
+                    />
                 </td>
                 {columnKeys.map((column, index) => (
                     <th key={index} scope="col" className={`manage-column column-${columns[column].toLowerCase()}`}>{column}</th>

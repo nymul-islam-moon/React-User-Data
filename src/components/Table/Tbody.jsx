@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import React from "react";
 
-const Tbody = ({ columns, isLoading, data, handleDelete, editActionLink, isDeleteLoading }) => {
+const Tbody = ({ columns, isLoading, data, handleDelete, editActionLink, isDeleteLoading, selectedItems, onSelectItem }) => {
     // Ensure columns is an array
     const columnValues = Array.isArray(columns) ? columns : Object.values(columns);
 
@@ -25,11 +25,15 @@ const Tbody = ({ columns, isLoading, data, handleDelete, editActionLink, isDelet
 
         { data.map( ( item ) => (
             <tr key={item.id}>
-                <th scope="row" className="check-column">
-                    <input type="checkbox" value={item.id} />
-                </th>
-                { columnValues.map( ( column ) => (
-                    <td key={ column } className={`column-${column.toLowerCase()}`}>{item[column.toLowerCase()]}</td>
+                <td scope="row" className="user-checkbox">
+                    <input
+                        type="checkbox"
+                        checked={selectedItems.includes(item.id)}
+                        onChange={() => onSelectItem(item.id)}
+                    />
+                </td>
+                {columnValues.map((column) => (
+                    <td key={column} className={`column-${column.toLowerCase()}`}>{item[column.toLowerCase()]}</td>
                 ))}
                 <td className="column-actions">
                         <span className="actions">
