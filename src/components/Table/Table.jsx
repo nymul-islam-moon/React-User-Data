@@ -15,79 +15,41 @@ const Table = ({ title, columns, data, isLoading, handleDelete, totalData, total
     }, [selectedItems, data]);
 
     const handleSelectAll = () => {
-        if (isAllSelected) {
-            setSelectedItems([]);
-        } else {
-            setSelectedItems(data.map(item => item.id));
-        }
+        setSelectedItems(isAllSelected ? [] : data.map(item => item.id));
     };
 
     const handleSelectItem = (id) => {
-        if (selectedItems.includes(id)) {
-            setSelectedItems(selectedItems.filter(itemId => itemId !== id));
-        } else {
-            setSelectedItems([...selectedItems, id]);
-        }
+        setSelectedItems(selectedItems.includes(id) ? selectedItems.filter(itemId => itemId !== id) : [...selectedItems, id]);
     };
 
     const bulkAction = (actionData) => {
-        if( selectedItems.length > 0 && actionData === 'trash' ) {
-            const bulkActionItems = {
-                action: actionData,
-                items: selectedItems,
-            }
-            handleBulkAction( bulkActionItems );
+        if (selectedItems.length > 0 && actionData === 'trash') {
+            handleBulkAction({ action: actionData, items: selectedItems });
         }
     }
 
     const handleNextPage = () => {
-        if (currentPage < totalPages) {
-            handleCurrentPage(currentPage + 1);
-        }
+        if (currentPage < totalPages) handleCurrentPage(currentPage + 1);
     };
 
     const handlePreviousPage = () => {
-        if (currentPage > 1) {
-            handleCurrentPage(currentPage - 1);
-        }
+        if (currentPage > 1) handleCurrentPage(currentPage - 1);
     };
 
     const handlePageClick = (number) => {
-        handleCurrentPage(currentPage = number);
-    }
+        handleCurrentPage(number);
+    };
 
     return (
         <div className="wrap">
             <h1 className="wp-heading-inline">{title}</h1>
-
-            <Link to={addActionLink} className="page-title-action">
-                Add {title}
-            </Link>
-
-            <TableNav title={title} totalData={totalData} currentData={currentData} bulkAction={bulkAction}/>
-
+            <Link to={addActionLink} className="page-title-action">Add {title}</Link>
+            <TableNav title={title} totalData={totalData} currentData={currentData} bulkAction={bulkAction} />
             <table className="wp-list-table widefat fixed striped">
-
-                <Thead
-                    columns={columns}
-                    isAllSelected={isAllSelected}
-                    onSelectAll={handleSelectAll}
-                />
-                <Tbody
-                    columns={columns}
-                    isLoading={isLoading}
-                    data={data}
-                    handleDelete={handleDelete}
-                    editActionLink={editActionLink}
-                    isDeleteLoading={isDeleteLoading}
-                    handlePageClick={handlePageClick}
-                    selectedItems={selectedItems}
-                    onSelectItem={handleSelectItem}
-                />
+                <Thead columns={columns} isAllSelected={isAllSelected} onSelectAll={handleSelectAll} />
+                <Tbody columns={columns} isLoading={isLoading} data={data} handleDelete={handleDelete} editActionLink={editActionLink} isDeleteLoading={isDeleteLoading} selectedItems={selectedItems} onSelectItem={handleSelectItem} />
             </table>
-            { totalData && totalData > 10 && (
-                <Pagination currentPage={currentPage} totalPage={totalPages} nextPage={handleNextPage} previousPage={handlePreviousPage} pageClick={handlePageClick}/>
-            ) }
+            {totalData > 10 && <Pagination currentPage={currentPage} totalPage={totalPages} nextPage={handleNextPage} previousPage={handlePreviousPage} pageClick={handlePageClick} />}
         </div>
     );
 }

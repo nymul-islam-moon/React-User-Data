@@ -7379,40 +7379,27 @@ const Table = ({
     setIsAllSelected(data.length > 0 && selectedItems.length === data.length);
   }, [selectedItems, data]);
   const handleSelectAll = () => {
-    if (isAllSelected) {
-      setSelectedItems([]);
-    } else {
-      setSelectedItems(data.map(item => item.id));
-    }
+    setSelectedItems(isAllSelected ? [] : data.map(item => item.id));
   };
   const handleSelectItem = id => {
-    if (selectedItems.includes(id)) {
-      setSelectedItems(selectedItems.filter(itemId => itemId !== id));
-    } else {
-      setSelectedItems([...selectedItems, id]);
-    }
+    setSelectedItems(selectedItems.includes(id) ? selectedItems.filter(itemId => itemId !== id) : [...selectedItems, id]);
   };
   const bulkAction = actionData => {
     if (selectedItems.length > 0 && actionData === 'trash') {
-      const bulkActionItems = {
+      handleBulkAction({
         action: actionData,
         items: selectedItems
-      };
-      handleBulkAction(bulkActionItems);
+      });
     }
   };
   const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      handleCurrentPage(currentPage + 1);
-    }
+    if (currentPage < totalPages) handleCurrentPage(currentPage + 1);
   };
   const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      handleCurrentPage(currentPage - 1);
-    }
+    if (currentPage > 1) handleCurrentPage(currentPage - 1);
   };
   const handlePageClick = number => {
-    handleCurrentPage(currentPage = number);
+    handleCurrentPage(number);
   };
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "wrap"
@@ -7439,10 +7426,9 @@ const Table = ({
     handleDelete: handleDelete,
     editActionLink: editActionLink,
     isDeleteLoading: isDeleteLoading,
-    handlePageClick: handlePageClick,
     selectedItems: selectedItems,
     onSelectItem: handleSelectItem
-  })), totalData && totalData > 10 && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_Pagination__WEBPACK_IMPORTED_MODULE_5__["default"], {
+  })), totalData > 10 && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_Pagination__WEBPACK_IMPORTED_MODULE_5__["default"], {
     currentPage: currentPage,
     totalPage: totalPages,
     nextPage: handleNextPage,
