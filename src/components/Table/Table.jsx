@@ -5,11 +5,11 @@ import Thead from "./Thead";
 import Tbody from "./Tbody";
 import Pagination from "./Pagination";
 
-const Table = ({ title, columns, data, isLoading, handleDelete, totalData, totalPages, currentPage, handleCurrentPage, currentData, addActionLink, editActionLink, isDeleteLoading }) => {
+const Table = ({ title, columns, data, isLoading, handleDelete, totalData, totalPages, currentPage, handleCurrentPage, currentData, addActionLink, editActionLink, isDeleteLoading, handleBulkAction }) => {
 
     const [selectedItems, setSelectedItems] = useState([]);
     const [isAllSelected, setIsAllSelected] = useState(false);
-    
+
     useEffect(() => {
         setIsAllSelected(data.length > 0 && selectedItems.length === data.length);
     }, [selectedItems, data]);
@@ -30,6 +30,15 @@ const Table = ({ title, columns, data, isLoading, handleDelete, totalData, total
         }
     };
 
+    const bulkAction = (actionData) => {
+        if( selectedItems.length > 0 && actionData === 'trash' ) {
+            const bulkActionItems = {
+                action: actionData,
+                items: selectedItems,
+            }
+            handleBulkAction( bulkActionItems );
+        }
+    }
 
     const handleNextPage = () => {
         if (currentPage < totalPages) {
@@ -55,7 +64,7 @@ const Table = ({ title, columns, data, isLoading, handleDelete, totalData, total
                 Add {title}
             </Link>
 
-            <TableNav title={title} totalData={totalData} currentData={currentData}/>
+            <TableNav title={title} totalData={totalData} currentData={currentData} bulkAction={bulkAction}/>
 
             <table className="wp-list-table widefat fixed striped">
 

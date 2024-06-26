@@ -46,26 +46,35 @@ const Users = () => {
         // console.log(currentPage);
     }, [data]); // if any error found add dispatch here
 
-    const handleDelete = async (id) => {
-        if (window.confirm('Are you sure you want to delete this user?')) {
-            const result = await deleteItem(id);
-            console.log(result);
-            if (result) {
-                dispatch(deleteUser(id));
+    const handleDelete = async (ids) => {
+        if (window.confirm('Are you sure you want to delete the selected users?')) {
+            const response = await deleteItem(ids);
 
-                const remainder = totalUsers % perPage;
+            if (response) {
+                if (Array.isArray(ids)) {
+                    ids.forEach(id => dispatch(deleteUser(id)));
+                } else {
+                    dispatch(deleteUser(ids));
+                }
 
-                if (remainder === 1 && currentPage > 1) {
-
+                const remainder = (totalUsers - (Array.isArray(ids) ? ids.length : 1)) % perPage;
+                
+                if (remainder === 0 && currentPage > 1) {
                     setCurrentPage(currentPage - 1);
                 } else {
                     await fetchData(); // Re-fetch data after delete
                 }
-                toast.error( result.previous.name + ' has deleted successfully');
+                toast.error(response.message);
             } else {
                 toast.error('Data not found');
-                // await fetchData();
             }
+        }
+    };
+
+
+    const handleBulkAction = async (data) => {
+        if (data.action === 'trash') {
+            await handleDelete(data.items);
         }
     };
 
@@ -92,6 +101,7 @@ const Users = () => {
                     handleCurrentPage={handleCurrentPage}
                     isDeleteLoading={isDeleteLoading}
                     handleDelete={handleDelete}
+                    handleBulkAction={handleBulkAction}
                 />
             )}
             <ToastContainer />

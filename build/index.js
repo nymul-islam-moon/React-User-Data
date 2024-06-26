@@ -7206,6 +7206,61 @@ const ReusableForm = ({
 
 /***/ }),
 
+/***/ "./src/components/Table/BulkActions.jsx":
+/*!**********************************************!*\
+  !*** ./src/components/Table/BulkActions.jsx ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+
+
+const BulkActions = ({
+  bulkAction
+}) => {
+  const [selectedAction, setSelectedAction] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('-1');
+  const handleActionChange = e => {
+    setSelectedAction(e.target.value);
+  };
+  const handleSubmit = () => {
+    if (selectedAction !== '-1') {
+      bulkAction(selectedAction);
+    }
+  };
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "alignleft actions bulkactions"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
+    htmlFor: "bulk-action-selector-top",
+    className: "screen-reader-text"
+  }, "Select bulk action"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("select", {
+    name: "action",
+    id: "bulk-action-selector-top",
+    onChange: handleActionChange
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
+    value: "-1"
+  }, "Bulk actions"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
+    value: "edit",
+    className: "hide-if-no-js"
+  }, "Edit"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
+    value: "trash"
+  }, "Move to Trash")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    type: "submit",
+    onClick: () => handleSubmit(),
+    className: "button"
+  }, "Action")));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (BulkActions);
+
+/***/ }),
+
 /***/ "./src/components/Table/Pagination.jsx":
 /*!*********************************************!*\
   !*** ./src/components/Table/Pagination.jsx ***!
@@ -7311,7 +7366,8 @@ const Table = ({
   currentData,
   addActionLink,
   editActionLink,
-  isDeleteLoading
+  isDeleteLoading,
+  handleBulkAction
 }) => {
   const [selectedItems, setSelectedItems] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]);
   const [isAllSelected, setIsAllSelected] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false);
@@ -7330,6 +7386,15 @@ const Table = ({
       setSelectedItems(selectedItems.filter(itemId => itemId !== id));
     } else {
       setSelectedItems([...selectedItems, id]);
+    }
+  };
+  const bulkAction = actionData => {
+    if (selectedItems.length > 0 && actionData === 'trash') {
+      const bulkActionItems = {
+        action: actionData,
+        items: selectedItems
+      };
+      handleBulkAction(bulkActionItems);
     }
   };
   const handleNextPage = () => {
@@ -7355,7 +7420,8 @@ const Table = ({
   }, "Add ", title), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_TableNav__WEBPACK_IMPORTED_MODULE_2__["default"], {
     title: title,
     totalData: totalData,
-    currentData: currentData
+    currentData: currentData,
+    bulkAction: bulkAction
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("table", {
     className: "wp-list-table widefat fixed striped"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_Thead__WEBPACK_IMPORTED_MODULE_3__["default"], {
@@ -7399,36 +7465,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _BulkActions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./BulkActions */ "./src/components/Table/BulkActions.jsx");
+
 
 
 const TableNav = ({
   title,
   totalData,
-  currentData
+  currentData,
+  bulkAction
 }) => {
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "tablenav top"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "alignleft actions bulkactions"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
-    htmlFor: "bulk-action-selector-top",
-    className: "screen-reader-text"
-  }, "Select bulk action"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("select", {
-    name: "action",
-    id: "bulk-action-selector-top"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
-    value: "-1"
-  }, "Bulk actions"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
-    value: "edit",
-    className: "hide-if-no-js"
-  }, "Edit"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
-    value: "trash"
-  }, "Move to Trash")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
-    type: "submit",
-    id: "doaction",
-    className: "button action",
-    value: "Apply"
-  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_BulkActions__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    bulkAction: bulkAction
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "alignleft actions"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
     htmlFor: "filter-by-date",
@@ -7748,27 +7799,46 @@ const useDelete = url => {
   const [deletedData, setDeletedData] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
   const [isDeleteLoading, setIsDeleteLoading] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const [deleteError, setDeleteError] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
-  const deleteItem = async itemId => {
+  const deleteItem = async itemIds => {
     setIsDeleteLoading(true);
     try {
-      const response = await axios__WEBPACK_IMPORTED_MODULE_1___default()["delete"](`${url}/${itemId}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'X-WP-Nonce': appLocalizer.nonce
-        }
-      });
-      setDeletedData(response.data);
-      setIsDeleteLoading(false);
-      return response.data; // return the deleted data for further processing
+      if (Array.isArray(itemIds)) {
+        const responses = await Promise.all(itemIds.map(itemId => axios__WEBPACK_IMPORTED_MODULE_1___default()["delete"](`${url}/${itemId}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'X-WP-Nonce': appLocalizer.nonce
+          }
+        })));
+        setIsDeleteLoading(false);
+        setDeletedData({
+          message: 'Items deleted successfully'
+        });
+        return {
+          message: 'Items deleted successfully'
+        };
+      } else {
+        const response = await axios__WEBPACK_IMPORTED_MODULE_1___default()["delete"](`${url}/${itemIds}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'X-WP-Nonce': appLocalizer.nonce
+          }
+        });
+        setDeletedData(response.data);
+        setIsDeleteLoading(false);
+        console.log(response.data.previous);
+        return {
+          message: response.data.previous.name + ' deleted successfully'
+        };
+      }
     } catch (err) {
       setIsDeleteLoading(false);
       setDeleteError(err);
+      console.error('Delete Error:', err.response ? err.response.data.message : err.message);
       return false;
     }
   };
   return {
     deleteItem,
-    deletedData,
     isDeleteLoading,
     deleteError
   };
@@ -7935,18 +8005,21 @@ const Books = () => {
     'Publish Date': 'publish_date'
   };
   const bookData = [{
+    id: 1,
     name: "Life of PI",
     category: "Adventure",
     author: "Yann Martel",
     rating: 5.5,
     publish_date: "12/12/2023"
   }, {
+    id: 2,
     name: "JUMANJI",
     category: "Adventure",
     author: "Chris Van Allsburg",
     rating: 8.0,
     publish_date: "12/12/2023"
   }, {
+    id: 3,
     name: "Life of PHP",
     category: "Autobiography",
     author: "Telyan Marsubag",
@@ -8156,23 +8229,30 @@ const Users = () => {
     // console.log(currentPage);
   }, [data]); // if any error found add dispatch here
 
-  const handleDelete = async id => {
-    if (window.confirm('Are you sure you want to delete this user?')) {
-      const result = await deleteItem(id);
-      console.log(result);
-      if (result) {
-        dispatch((0,_fetaures_users_UsersSlice__WEBPACK_IMPORTED_MODULE_2__.deleteUser)(id));
-        const remainder = totalUsers % perPage;
-        if (remainder === 1 && currentPage > 1) {
+  const handleDelete = async ids => {
+    if (window.confirm('Are you sure you want to delete the selected users?')) {
+      const response = await deleteItem(ids);
+      if (response) {
+        if (Array.isArray(ids)) {
+          ids.forEach(id => dispatch((0,_fetaures_users_UsersSlice__WEBPACK_IMPORTED_MODULE_2__.deleteUser)(id)));
+        } else {
+          dispatch((0,_fetaures_users_UsersSlice__WEBPACK_IMPORTED_MODULE_2__.deleteUser)(ids));
+        }
+        const remainder = (totalUsers - (Array.isArray(ids) ? ids.length : 1)) % perPage;
+        if (remainder === 0 && currentPage > 1) {
           setCurrentPage(currentPage - 1);
         } else {
           await fetchData(); // Re-fetch data after delete
         }
-        react_toastify__WEBPACK_IMPORTED_MODULE_6__.toast.error(result.previous.name + ' has deleted successfully');
+        react_toastify__WEBPACK_IMPORTED_MODULE_6__.toast.error(response.message);
       } else {
         react_toastify__WEBPACK_IMPORTED_MODULE_6__.toast.error('Data not found');
-        // await fetchData();
       }
+    }
+  };
+  const handleBulkAction = async data => {
+    if (data.action === 'trash') {
+      await handleDelete(data.items);
     }
   };
   const handleCurrentPage = page => {
@@ -8192,7 +8272,8 @@ const Users = () => {
     currentPage: currentPage,
     handleCurrentPage: handleCurrentPage,
     isDeleteLoading: isDeleteLoading,
-    handleDelete: handleDelete
+    handleDelete: handleDelete,
+    handleBulkAction: handleBulkAction
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_toastify__WEBPACK_IMPORTED_MODULE_6__.ToastContainer, null));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Users);

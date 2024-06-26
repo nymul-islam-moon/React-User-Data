@@ -1,17 +1,12 @@
 import React from "react";
+import BulkActions from "./BulkActions";
 
-const TableNav = ({ title, totalData, currentData }) => {
+const TableNav = ({ title, totalData, currentData, bulkAction }) => {
+
+
     return <>
         <div className="tablenav top">
-            <div className="alignleft actions bulkactions">
-                <label htmlFor="bulk-action-selector-top" className="screen-reader-text">Select bulk action</label>
-                <select name="action" id="bulk-action-selector-top">
-                    <option value="-1">Bulk actions</option>
-                    <option value="edit" className="hide-if-no-js">Edit</option>
-                    <option value="trash">Move to Trash</option>
-                </select>
-                <input type="submit" id="doaction" className="button action" value="Apply"/>
-            </div>
+            <BulkActions bulkAction={bulkAction}/>
             <div className="alignleft actions">
                 <label htmlFor="filter-by-date" className="screen-reader-text">Filter by date</label>
                 <select name="m" id="filter-by-date">
