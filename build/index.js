@@ -7786,7 +7786,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const useDelete = url => {
-  const [deletedData, setDeletedData] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
   const [isDeleteLoading, setIsDeleteLoading] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const [deleteError, setDeleteError] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
   const deleteItem = async itemIds => {
@@ -7800,9 +7799,6 @@ const useDelete = url => {
           }
         })));
         setIsDeleteLoading(false);
-        setDeletedData({
-          message: 'Items deleted successfully'
-        });
         return {
           message: 'Items deleted successfully'
         };
@@ -7813,7 +7809,6 @@ const useDelete = url => {
             'X-WP-Nonce': appLocalizer.nonce
           }
         });
-        setDeletedData(response.data);
         setIsDeleteLoading(false);
         console.log(response.data.previous);
         return {

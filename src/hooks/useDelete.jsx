@@ -2,7 +2,6 @@ import { useState } from 'react';
 import axios from 'axios';
 
 const useDelete = (url) => {
-    const [deletedData, setDeletedData] = useState(null);
     const [isDeleteLoading, setIsDeleteLoading] = useState(false);
     const [deleteError, setDeleteError] = useState(null);
 
@@ -19,7 +18,7 @@ const useDelete = (url) => {
                     })
                 ));
                 setIsDeleteLoading(false);
-                setDeletedData({ message: 'Items deleted successfully' });
+
                 return { message: 'Items deleted successfully' };
             } else {
                 const response = await axios.delete(`${url}/${itemIds}`, {
@@ -28,7 +27,6 @@ const useDelete = (url) => {
                         'X-WP-Nonce': appLocalizer.nonce,
                     },
                 });
-                setDeletedData(response.data);
                 setIsDeleteLoading(false);
                 console.log(response.data.previous);
                 return { message: response.data.previous.name + ' deleted successfully' };
