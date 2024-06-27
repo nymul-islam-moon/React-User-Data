@@ -7584,7 +7584,7 @@ const Tbody = ({
   }, "Edit")), "\xA0|\xA0", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     className: "delete",
     onClick: () => handleDelete(item.id)
-  }, isDeleteLoading ? 'Deleting..' : 'Delete'))))));
+  }, isDeleteLoading[item.id] ? 'Deleting..' : 'Delete'))))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Tbody);
 
@@ -7786,10 +7786,16 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const useDelete = url => {
-  const [isDeleteLoading, setIsDeleteLoading] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+  const [isDeleteLoading, setIsDeleteLoading] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({});
   const [deleteError, setDeleteError] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
   const deleteItem = async itemIds => {
-    setIsDeleteLoading(true);
+    let loadingState = {};
+    if (Array.isArray(itemIds)) {
+      itemIds.forEach(id => loadingState[id] = true);
+    } else {
+      loadingState[itemIds] = true;
+    }
+    setIsDeleteLoading(loadingState);
     try {
       if (Array.isArray(itemIds)) {
         const responses = await Promise.all(itemIds.map(itemId => axios__WEBPACK_IMPORTED_MODULE_1___default()["delete"](`${url}/${itemId}`, {
@@ -7798,7 +7804,7 @@ const useDelete = url => {
             'X-WP-Nonce': appLocalizer.nonce
           }
         })));
-        setIsDeleteLoading(false);
+        setIsDeleteLoading({});
         return {
           message: 'Items deleted successfully'
         };
@@ -7809,14 +7815,14 @@ const useDelete = url => {
             'X-WP-Nonce': appLocalizer.nonce
           }
         });
-        setIsDeleteLoading(false);
+        setIsDeleteLoading({});
         console.log(response.data.previous);
         return {
           message: response.data.previous.name + ' deleted successfully'
         };
       }
     } catch (err) {
-      setIsDeleteLoading(false);
+      setIsDeleteLoading({});
       setDeleteError(err);
       console.error('Delete Error:', err.response ? err.response.data.message : err.message);
       return false;

@@ -2,11 +2,18 @@ import { useState } from 'react';
 import axios from 'axios';
 
 const useDelete = (url) => {
-    const [isDeleteLoading, setIsDeleteLoading] = useState(false);
+    const [isDeleteLoading, setIsDeleteLoading] = useState({});
     const [deleteError, setDeleteError] = useState(null);
 
     const deleteItem = async (itemIds) => {
-        setIsDeleteLoading(true);
+        let loadingState = {};
+        if (Array.isArray(itemIds)) {
+            itemIds.forEach(id => loadingState[id] = true);
+        } else {
+            loadingState[itemIds] = true;
+        }
+        setIsDeleteLoading(loadingState);
+
         try {
             if (Array.isArray(itemIds)) {
                 const responses = await Promise.all(itemIds.map(itemId =>
@@ -17,8 +24,7 @@ const useDelete = (url) => {
                         },
                     })
                 ));
-                setIsDeleteLoading(false);
-
+                setIsDeleteLoading({});
                 return { message: 'Items deleted successfully' };
             } else {
                 const response = await axios.delete(`${url}/${itemIds}`, {
@@ -27,12 +33,12 @@ const useDelete = (url) => {
                         'X-WP-Nonce': appLocalizer.nonce,
                     },
                 });
-                setIsDeleteLoading(false);
+                setIsDeleteLoading({});
                 console.log(response.data.previous);
                 return { message: response.data.previous.name + ' deleted successfully' };
             }
         } catch (err) {
-            setIsDeleteLoading(false);
+            setIsDeleteLoading({});
             setDeleteError(err);
             console.error('Delete Error:', err.response ? err.response.data.message : err.message);
             return false;

@@ -41,7 +41,7 @@ const Tbody = ({ columns, isLoading, data, handleDelete, editActionLink, isDelet
                                 <button className="edit">Edit</button>
                             </Link>
                             &nbsp;|&nbsp;
-                            <button className="delete" onClick={() => handleDelete(item.id)}>{isDeleteLoading ? 'Deleting..' : 'Delete'}</button>
+                            <button className="delete" onClick={() => handleDelete(item.id)}>{isDeleteLoading[item.id] ? 'Deleting..' : 'Delete'}</button>
                         </span>
                 </td>
             </tr>
