@@ -1,6 +1,18 @@
 <?php
 
 /**
+ * Date formatter
+ *
+ * @param $date
+ * @return bool
+ */
+function validate_and_format_date($date) {
+    $format = 'Y-m-d';
+    $d = DateTime::createFromFormat($format, $date);
+    return $d && $d->format($format) === $date;
+}
+
+/**
  * Fetch total Users form database
  *
  * @param $args
@@ -38,7 +50,7 @@ function rud_get_users( $args = [] ) {
     } elseif ( ! empty( $args['start_date'] ) ) {
         $date_query = $wpdb->prepare( "AND DATE(created_at) = %s", $args['start_date'] );
     }
-    
+
     $items = $wpdb->get_results(
         $wpdb->prepare(
             "SELECT * FROM {$wpdb->prefix}react_user_data_users WHERE 1=1 $search $date_query ORDER BY {$args['orderby']} {$args['order']} LIMIT %d, %d",

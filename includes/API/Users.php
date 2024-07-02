@@ -108,7 +108,6 @@ class Users extends \WP_REST_Controller {
             }
         }
 
-
         // Add date range parameters
         if ( isset( $request['start_date'] ) && ! empty( $request['start_date'] ) ) {
             $args['start_date'] = $request['start_date'];
@@ -513,7 +512,19 @@ class Users extends \WP_REST_Controller {
     public function get_collection_params() {
         $params = parent::get_collection_params();
 
-        unset( $params['search'] );
+        $params['start_date'] = [
+            'description'       => __( 'Filter results after a given date.' ),
+            'type'              => 'string',
+            'format'            => 'date-time',
+            'sanitize_callback' => 'sanitize_text_field',
+        ];
+
+        $params['end_date'] = [
+            'description'       => __( 'Filter results before a given date.' ),
+            'type'              => 'string',
+            'format'            => 'date-time',
+            'sanitize_callback' => 'sanitize_text_field',
+        ];
 
         $params['search'] = [
             'description'       => __( 'Limit results to those matching a string.' ),

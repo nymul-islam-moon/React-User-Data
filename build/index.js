@@ -7265,6 +7265,65 @@ const BulkActions = ({
 
 /***/ }),
 
+/***/ "./src/components/Table/DateFilter.jsx":
+/*!*********************************************!*\
+  !*** ./src/components/Table/DateFilter.jsx ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+
+
+const DateFilter = ({
+  handleFilter
+}) => {
+  const [startDate, setStartDate] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
+  const [endDate, setEndDate] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
+  const handleFilterDate = () => {
+    handleFilter(startDate, endDate);
+    // console.log(startDate + ' - ' + endDate);
+  };
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "alignleft actions"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
+    htmlFor: "filter-start-date",
+    className: "screen-reader-text"
+  }, "Start Date"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+    type: "date",
+    name: "start-date",
+    id: "filter-start-date",
+    className: "postform",
+    onChange: e => setStartDate(e.target.value)
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
+    htmlFor: "filter-end-date",
+    className: "screen-reader-text"
+  }, "End Date"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+    type: "date",
+    name: "end-date",
+    id: "filter-end-date",
+    className: "postform",
+    onChange: e => setEndDate(e.target.value)
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+    type: "submit",
+    onClick: handleFilterDate,
+    name: "filter_action",
+    id: "post-query-submit",
+    className: "button",
+    value: "Filter"
+  })));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (DateFilter);
+
+/***/ }),
+
 /***/ "./src/components/Table/Pagination.jsx":
 /*!*********************************************!*\
   !*** ./src/components/Table/Pagination.jsx ***!
@@ -7372,7 +7431,8 @@ const Table = ({
   editActionLink,
   isDeleteLoading,
   handleBulkAction,
-  handleSearch
+  handleSearch,
+  handleFilter
 }) => {
   const [selectedItems, setSelectedItems] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]);
   const [isAllSelected, setIsAllSelected] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false);
@@ -7414,7 +7474,8 @@ const Table = ({
     totalData: totalData,
     currentData: currentData,
     bulkAction: bulkAction,
-    handleSearch: handleSearch
+    handleSearch: handleSearch,
+    handleFilter: handleFilter
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("table", {
     className: "wp-list-table widefat fixed striped"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_Thead__WEBPACK_IMPORTED_MODULE_3__["default"], {
@@ -7458,6 +7519,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _BulkActions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./BulkActions */ "./src/components/Table/BulkActions.jsx");
+/* harmony import */ var _DateFilter__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./DateFilter */ "./src/components/Table/DateFilter.jsx");
+
 
 
 
@@ -7466,7 +7529,8 @@ const TableNav = ({
   totalData,
   currentData,
   bulkAction,
-  handleSearch
+  handleSearch,
+  handleFilter
 }) => {
   const [searchTerm, setSearchTerm] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null);
   const handleSearchClick = () => {
@@ -7478,34 +7542,8 @@ const TableNav = ({
     bulkAction: bulkAction
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "alignleft actions"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
-    htmlFor: "filter-by-date",
-    className: "screen-reader-text"
-  }, "Filter by date"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("select", {
-    name: "m",
-    id: "filter-by-date"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
-    value: "0"
-  }, "All dates"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
-    value: "202406"
-  }, "June 2024")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
-    className: "screen-reader-text",
-    htmlFor: "cat"
-  }, "Filter by category"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("select", {
-    name: "cat",
-    id: "cat",
-    className: "postform"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
-    value: "0"
-  }, "All Categories"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
-    className: "level-0",
-    value: "1"
-  }, "Uncategorized")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
-    type: "submit",
-    name: "filter_action",
-    id: "post-query-submit",
-    className: "button",
-    value: "Filter"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_DateFilter__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    handleFilter: handleFilter
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
     htmlFor: "search",
     className: "screen-reader-text"
@@ -7875,20 +7913,29 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
 
 
-const useFetch = (url, currentPage, search) => {
+const useFetch = (url, currentPage, search, filterStartDate, filterEndDate) => {
   const [data, setData] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
   const [headers, setHeaders] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
   const [error, setError] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
   const [isLoading, setIsLoading] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true);
-  if (search !== null) {
-    search = `search=${search}`;
-  } else {
-    search = '';
-  }
+  const buildQueryString = () => {
+    let queryString = `page=${currentPage}`;
+    if (search) {
+      queryString += `&search=${search}`;
+    }
+    if (filterStartDate) {
+      queryString += `&start_date=${filterStartDate}`;
+    }
+    if (filterEndDate) {
+      queryString += `&end_date=${filterEndDate}`;
+    }
+    return queryString;
+  };
   const fetchData = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(async () => {
     setIsLoading(true);
     try {
-      const response = await axios__WEBPACK_IMPORTED_MODULE_1___default().get(`${url}?page=${currentPage}&${search}`, {
+      const queryString = buildQueryString();
+      const response = await axios__WEBPACK_IMPORTED_MODULE_1___default().get(`${url}?${queryString}`, {
         headers: {
           'Content-Type': 'application/json',
           'X-WP-Nonce': appLocalizer.nonce
@@ -7902,7 +7949,7 @@ const useFetch = (url, currentPage, search) => {
       setError(err);
       console.error(err);
     }
-  }, [url, currentPage, search]);
+  }, [url, currentPage, search, filterStartDate, filterEndDate]);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     fetchData();
   }, [fetchData]);
@@ -8198,13 +8245,15 @@ const Users = () => {
   const [totalPages, setTotalPages] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(0);
   const [perPage, setPerPage] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(0);
   const [search, setSearch] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null);
+  const [filterStartDate, setFilterStartDate] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null);
+  const [filterEndDate, setFilterEndDate] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null);
   const {
     data,
     isLoading,
     error,
     headers,
     fetchData
-  } = (0,_hooks_useFetch__WEBPACK_IMPORTED_MODULE_3__["default"])(url, currentPage, search);
+  } = (0,_hooks_useFetch__WEBPACK_IMPORTED_MODULE_3__["default"])(url, currentPage, search, filterStartDate, filterEndDate);
   const {
     deleteItem,
     isDeleteLoading,
@@ -8265,6 +8314,14 @@ const Users = () => {
   const handleSearch = data => {
     setSearch(data);
   };
+  const handleFilter = (start, end) => {
+    if (start) {
+      setFilterStartDate(start);
+    }
+    if (end) {
+      setFilterEndDate(end);
+    }
+  };
   const handleBulkAction = async data => {
     if (data.action === 'trash') {
       await handleDelete(data.items);
@@ -8289,6 +8346,7 @@ const Users = () => {
     isDeleteLoading: isDeleteLoading,
     handleDelete: handleDelete,
     handleSearch: handleSearch,
+    handleFilter: handleFilter,
     handleBulkAction: handleBulkAction
   }));
 };

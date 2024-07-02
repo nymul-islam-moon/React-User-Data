@@ -1,7 +1,8 @@
 import React, {useState} from "react";
 import BulkActions from "./BulkActions";
+import DateFilter from "./DateFilter";
 
-const TableNav = ({ title, totalData, currentData, bulkAction, handleSearch }) => {
+const TableNav = ({ title, totalData, currentData, bulkAction, handleSearch, handleFilter }) => {
 
     const [searchTerm, setSearchTerm] = useState(null);
 
@@ -13,17 +14,8 @@ const TableNav = ({ title, totalData, currentData, bulkAction, handleSearch }) =
         <div className="tablenav top">
             <BulkActions bulkAction={bulkAction}/>
             <div className="alignleft actions">
-                <label htmlFor="filter-by-date" className="screen-reader-text">Filter by date</label>
-                <select name="m" id="filter-by-date">
-                    <option value="0">All dates</option>
-                    <option value="202406">June 2024</option>
-                </select>
-                <label className="screen-reader-text" htmlFor="cat">Filter by category</label>
-                <select name="cat" id="cat" className="postform">
-                    <option value="0">All Categories</option>
-                    <option className="level-0" value="1">Uncategorized</option>
-                </select>
-                <input type="submit" name="filter_action" id="post-query-submit" className="button" value="Filter"/>
+
+                <DateFilter handleFilter={handleFilter}/>
 
                 <label htmlFor="search" className="screen-reader-text">Search</label>
                 <input

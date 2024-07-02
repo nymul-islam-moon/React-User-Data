@@ -16,7 +16,9 @@ const Users = () => {
     const [totalPages, setTotalPages] = useState(0);
     const [perPage, setPerPage] = useState(0);
     const [ search, setSearch ] = useState(null);
-    const { data, isLoading, error, headers, fetchData } = useFetch(url, currentPage, search);
+    const [ filterStartDate, setFilterStartDate ] = useState(null);
+    const [ filterEndDate, setFilterEndDate ] = useState(null);
+    const { data, isLoading, error, headers, fetchData } = useFetch(url, currentPage, search, filterStartDate, filterEndDate);
     const { deleteItem, isDeleteLoading, deleteError } = useDelete(url);
     const dispatch = useDispatch();
     const users = useSelector((state) => state.usersReducer.users);
@@ -72,6 +74,16 @@ const Users = () => {
         setSearch(data);
     }
 
+    const handleFilter = (start, end) => {
+        if ( start ) {
+            setFilterStartDate(start);
+        }
+
+        if (end) {
+            setFilterEndDate(end);
+        }
+    }
+
     const handleBulkAction = async (data) => {
         if (data.action === 'trash') {
             await handleDelete(data.items);
@@ -102,6 +114,7 @@ const Users = () => {
                     isDeleteLoading={isDeleteLoading}
                     handleDelete={handleDelete}
                     handleSearch={handleSearch}
+                    handleFilter={handleFilter}
                     handleBulkAction={handleBulkAction}
                 />
             )}
