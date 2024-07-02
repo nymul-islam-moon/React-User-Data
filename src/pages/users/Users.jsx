@@ -72,15 +72,18 @@ const Users = () => {
 
     const handleSearch = (data) => {
         setSearch(data);
+        setCurrentPage(1);
     }
 
     const handleFilter = (start, end) => {
         if ( start ) {
             setFilterStartDate(start);
+            setCurrentPage(1);
         }
 
         if (end) {
             setFilterEndDate(end);
+            setCurrentPage(1);
         }
     }
 

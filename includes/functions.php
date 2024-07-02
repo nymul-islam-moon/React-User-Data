@@ -146,8 +146,6 @@ function rud_insert_user( $args = [] ) {
 
     $data = wp_parse_args( $args, $defaults );
 
-    error_log( print_r( $data, true ) );
-
     if ( isset( $data['id'] ) ) {
         $id = $data['id'];
 
