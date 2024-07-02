@@ -108,6 +108,20 @@ class Users extends \WP_REST_Controller {
             }
         }
 
+
+        // Add date range parameters
+        if ( isset( $request['start_date'] ) && ! empty( $request['start_date'] ) ) {
+            $args['start_date'] = $request['start_date'];
+        }
+        if ( isset( $request['end_date'] ) && ! empty( $request['end_date'] ) ) {
+            $args['end_date'] = $request['end_date'];
+        }
+
+        // Handle search query
+        if ( isset( $request['search'] ) && ! empty( $request['search'] ) ) {
+            $args['search'] = $request['search'];
+        }
+
         // change `per_page` to `number`
         $args['number'] = $args['per_page'];
         $args['offset'] = $args['number'] * ( $args['page'] - 1 );
@@ -118,17 +132,13 @@ class Users extends \WP_REST_Controller {
 
         $data     = [];
         $users = rud_get_users( $args );
-        $userx = get_all_users_data();
 
         foreach ( $users as $user ) {
             $response = $this->prepare_item_for_response( $user, $request );
             $data[]   = $this->prepare_response_for_collection( $response );
         }
 
-        // Handle search query
-        if ( isset( $request['search'] ) && ! empty( $request['search'] ) ) {
-            $args['search'] = '*' . $request['search'] . '*';
-        }
+
 
         $total      = rud_count( 'react_user_data_users' );
         $max_pages  = ceil( $total / (int) $args['number'] );

@@ -14,10 +14,13 @@ function rud_get_users( $args = [] ) {
         'orderby'   => 'id',
         'order'     => 'ASC',
         'search'    => '',
+        'start_date' => '',
+        'end_date'   => '',
     ];
 
     $args = wp_parse_args( $args, $defaults );
 
+    // search section
     $search = '';
     if ( ! empty( $args['search'] ) ) {
         $search = $wpdb->prepare(
@@ -28,9 +31,17 @@ function rud_get_users( $args = [] ) {
         );
     }
 
+    // Build the date range query part
+    $date_query = '';
+    if ( ! empty( $args['start_date'] ) && ! empty( $args['end_date'] ) ) {
+        $date_query = $wpdb->prepare( "AND DATE(created_at) BETWEEN %s AND %s", $args['start_date'], $args['end_date'] );
+    } elseif ( ! empty( $args['start_date'] ) ) {
+        $date_query = $wpdb->prepare( "AND DATE(created_at) = %s", $args['start_date'] );
+    }
+    
     $items = $wpdb->get_results(
         $wpdb->prepare(
-            "SELECT * FROM {$wpdb->prefix}react_user_data_users WHERE 1=1 $search ORDER BY {$args['orderby']} {$args['order']} LIMIT %d, %d",
+            "SELECT * FROM {$wpdb->prefix}react_user_data_users WHERE 1=1 $search $date_query ORDER BY {$args['orderby']} {$args['order']} LIMIT %d, %d",
             $args['offset'],
             $args['number']
         )
