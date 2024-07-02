@@ -15,7 +15,8 @@ const Users = () => {
     const [totalUsers, setTotalUsers] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
     const [perPage, setPerPage] = useState(0);
-    const { data, isLoading, error, headers, fetchData } = useFetch(url, currentPage);
+    const [ search, setSearch ] = useState(null);
+    const { data, isLoading, error, headers, fetchData } = useFetch(url, currentPage, search);
     const { deleteItem, isDeleteLoading, deleteError } = useDelete(url);
     const dispatch = useDispatch();
     const users = useSelector((state) => state.usersReducer.users);
@@ -40,7 +41,7 @@ const Users = () => {
             // Clear the message after displaying it
             navigate(location.pathname, { replace: true, state: {} });
         }
-    }, [data, dispatch]); // if any error found add dispatch here
+    }, [data, dispatch, search]); // if any error found add dispatch here
 
     const handleDelete = async (ids) => {
         if (window.confirm('Are you sure you want to delete the selected users?')) {
@@ -67,6 +68,9 @@ const Users = () => {
         }
     };
 
+    const handleSearch = (data) => {
+        setSearch(data);
+    }
 
     const handleBulkAction = async (data) => {
         if (data.action === 'trash') {
@@ -97,6 +101,7 @@ const Users = () => {
                     handleCurrentPage={handleCurrentPage}
                     isDeleteLoading={isDeleteLoading}
                     handleDelete={handleDelete}
+                    handleSearch={handleSearch}
                     handleBulkAction={handleBulkAction}
                 />
             )}

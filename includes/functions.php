@@ -12,17 +12,89 @@ function rud_get_users( $args = [] ) {
         'number'    => 20,
         'offset'    => 0,
         'orderby'   => 'id',
-        'order'     => 'ASC'
+        'order'     => 'ASC',
+        'search'    => '',
     ];
 
     $args = wp_parse_args( $args, $defaults );
 
+    $search = '';
+    if ( ! empty( $args['search'] ) ) {
+        $search = $wpdb->prepare(
+            "AND (name LIKE %s OR email LIKE %s OR phone LIKE %s)",
+            '%' . $wpdb->esc_like( $args['search'] ) . '%',
+            '%' . $wpdb->esc_like( $args['search'] ) . '%',
+            '%' . $wpdb->esc_like( $args['search'] ) . '%'
+        );
+    }
+
     $items = $wpdb->get_results(
         $wpdb->prepare(
-            "SELECT * FROM {$wpdb->prefix}react_user_data_users ORDER BY {$args['orderby']} {$args['order']} LIMIT %d, %d", $args['offset'], $args['number']
-        ) );
+            "SELECT * FROM {$wpdb->prefix}react_user_data_users WHERE 1=1 $search ORDER BY {$args['orderby']} {$args['order']} LIMIT %d, %d",
+            $args['offset'],
+            $args['number']
+        )
+    );
 
     return $items;
+}
+
+
+/**
+ * custom users data form users table in word-press
+ */
+function get_all_users_data( $args = [] ) {
+    // Set up default query arguments
+    $defaults = [
+        'number'    => 20,
+        'offset'    => 0,
+        'orderby'   => 'ID',
+        'order'     => 'DESC',
+        'role__in'  => ['administrator', 'editor', 'author', 'contributor', 'subscriber'] // Include all roles
+    ];
+
+    // Parse incoming $args into an array and merge it with $defaults
+    $args = wp_parse_args( $args, $defaults );
+
+    // Set up query arguments to retrieve users based on parsed arguments
+    $query_args = [
+        'number'    => $args['number'],
+        'offset'    => $args['offset'],
+        'orderby'   => $args['orderby'],
+        'order'     => $args['order'],
+        'role__in'  => $args['role__in'],
+    ];
+
+    // Retrieve the user query
+    $user_query = new WP_User_Query($query_args);
+    // Get the results
+    $users = $user_query->get_results();
+
+    // Initialize an array to hold user data
+    $users_data = [];
+
+    // Check for results
+    if (!empty($users)) {
+        // Loop through each user
+        foreach ($users as $user) {
+            $users_data[] = [
+                'id'            => $user->ID,
+                'user_login'    => $user->user_login,
+                'user_nicename'    => $user->user_nicename,
+                'email'         => $user->user_email,
+                'registered_at' => $user->user_registered,
+                'url'           => $user->user_url,
+                'status'        => $user->status ? $user->status : false,
+                'display_name'  => $user->display_name,
+                'roles'         => $user->roles,
+            ];
+        }
+    } else {
+        // No users found
+        $users_data = ['message' => 'No users found.'];
+    }
+
+    return $users_data;
 }
 
 /**

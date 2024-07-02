@@ -118,10 +118,16 @@ class Users extends \WP_REST_Controller {
 
         $data     = [];
         $users = rud_get_users( $args );
+        $userx = get_all_users_data();
 
         foreach ( $users as $user ) {
             $response = $this->prepare_item_for_response( $user, $request );
             $data[]   = $this->prepare_response_for_collection( $response );
+        }
+
+        // Handle search query
+        if ( isset( $request['search'] ) && ! empty( $request['search'] ) ) {
+            $args['search'] = '*' . $request['search'] . '*';
         }
 
         $total      = rud_count( 'react_user_data_users' );
@@ -498,6 +504,12 @@ class Users extends \WP_REST_Controller {
         $params = parent::get_collection_params();
 
         unset( $params['search'] );
+
+        $params['search'] = [
+            'description'       => __( 'Limit results to those matching a string.' ),
+            'type'              => 'string',
+            'sanitize_callback' => 'sanitize_text_field',
+        ];
 
         return $params;
     }

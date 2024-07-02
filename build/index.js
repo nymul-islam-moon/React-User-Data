@@ -7371,7 +7371,8 @@ const Table = ({
   addActionLink,
   editActionLink,
   isDeleteLoading,
-  handleBulkAction
+  handleBulkAction,
+  handleSearch
 }) => {
   const [selectedItems, setSelectedItems] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]);
   const [isAllSelected, setIsAllSelected] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false);
@@ -7412,7 +7413,8 @@ const Table = ({
     title: title,
     totalData: totalData,
     currentData: currentData,
-    bulkAction: bulkAction
+    bulkAction: bulkAction,
+    handleSearch: handleSearch
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("table", {
     className: "wp-list-table widefat fixed striped"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_Thead__WEBPACK_IMPORTED_MODULE_3__["default"], {
@@ -7463,8 +7465,13 @@ const TableNav = ({
   title,
   totalData,
   currentData,
-  bulkAction
+  bulkAction,
+  handleSearch
 }) => {
+  const [searchTerm, setSearchTerm] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null);
+  const handleSearchClick = () => {
+    handleSearch(searchTerm);
+  };
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "tablenav top"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_BulkActions__WEBPACK_IMPORTED_MODULE_2__["default"], {
@@ -7499,7 +7506,20 @@ const TableNav = ({
     id: "post-query-submit",
     className: "button",
     value: "Filter"
-  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
+    htmlFor: "search",
+    className: "screen-reader-text"
+  }, "Search"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+    type: "text",
+    id: "search",
+    name: "search",
+    placeholder: "Search...",
+    onChange: e => setSearchTerm(e.target.value)
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    type: "button",
+    onClick: handleSearchClick,
+    className: "button"
+  }, "Search")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "tablenav-pages one-page"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
     className: "displaying-num"
@@ -7855,15 +7875,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
 
 
-const useFetch = (url, currentPage) => {
+const useFetch = (url, currentPage, search) => {
   const [data, setData] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
   const [headers, setHeaders] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
   const [error, setError] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
   const [isLoading, setIsLoading] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true);
+  if (search !== null) {
+    search = `search=${search}`;
+  } else {
+    search = '';
+  }
   const fetchData = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(async () => {
     setIsLoading(true);
     try {
-      const response = await axios__WEBPACK_IMPORTED_MODULE_1___default().get(`${url}?page=${currentPage}`, {
+      const response = await axios__WEBPACK_IMPORTED_MODULE_1___default().get(`${url}?page=${currentPage}&${search}`, {
         headers: {
           'Content-Type': 'application/json',
           'X-WP-Nonce': appLocalizer.nonce
@@ -7877,7 +7902,7 @@ const useFetch = (url, currentPage) => {
       setError(err);
       console.error(err);
     }
-  }, [url, currentPage]);
+  }, [url, currentPage, search]);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     fetchData();
   }, [fetchData]);
@@ -8172,13 +8197,14 @@ const Users = () => {
   const [totalUsers, setTotalUsers] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(0);
   const [totalPages, setTotalPages] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(0);
   const [perPage, setPerPage] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(0);
+  const [search, setSearch] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null);
   const {
     data,
     isLoading,
     error,
     headers,
     fetchData
-  } = (0,_hooks_useFetch__WEBPACK_IMPORTED_MODULE_3__["default"])(url, currentPage);
+  } = (0,_hooks_useFetch__WEBPACK_IMPORTED_MODULE_3__["default"])(url, currentPage, search);
   const {
     deleteItem,
     isDeleteLoading,
@@ -8213,7 +8239,7 @@ const Users = () => {
         state: {}
       });
     }
-  }, [data, dispatch]); // if any error found add dispatch here
+  }, [data, dispatch, search]); // if any error found add dispatch here
 
   const handleDelete = async ids => {
     if (window.confirm('Are you sure you want to delete the selected users?')) {
@@ -8235,6 +8261,9 @@ const Users = () => {
         react_toastify__WEBPACK_IMPORTED_MODULE_6__.toast.error('Data not found');
       }
     }
+  };
+  const handleSearch = data => {
+    setSearch(data);
   };
   const handleBulkAction = async data => {
     if (data.action === 'trash') {
@@ -8259,6 +8288,7 @@ const Users = () => {
     handleCurrentPage: handleCurrentPage,
     isDeleteLoading: isDeleteLoading,
     handleDelete: handleDelete,
+    handleSearch: handleSearch,
     handleBulkAction: handleBulkAction
   }));
 };

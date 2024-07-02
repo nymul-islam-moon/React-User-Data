@@ -22,5 +22,7 @@ class API {
     public function register_api() {
         $users = new API\Users();
         $users->register_routes();
+        $wpd_users = new API\WPD_Users();
+        $wpd_users->register_routes();
     }
 }
