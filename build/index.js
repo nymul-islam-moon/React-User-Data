@@ -7389,6 +7389,46 @@ const Pagination = props => {
 
 /***/ }),
 
+/***/ "./src/components/Table/Search.jsx":
+/*!*****************************************!*\
+  !*** ./src/components/Table/Search.jsx ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+
+
+const Search = ({
+  handleSearchClick
+}) => {
+  const [searchTerm, setSearchTerm] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null);
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
+    htmlFor: "search",
+    className: "screen-reader-text"
+  }, "Search"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+    type: "text",
+    id: "search",
+    name: "search",
+    placeholder: "Search...",
+    onChange: e => setSearchTerm(e.target.value)
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    type: "button",
+    onClick: e => handleSearchClick(searchTerm),
+    className: "button"
+  }, "Search"));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Search);
+
+/***/ }),
+
 /***/ "./src/components/Table/Table.jsx":
 /*!****************************************!*\
   !*** ./src/components/Table/Table.jsx ***!
@@ -7520,6 +7560,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _BulkActions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./BulkActions */ "./src/components/Table/BulkActions.jsx");
 /* harmony import */ var _DateFilter__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./DateFilter */ "./src/components/Table/DateFilter.jsx");
+/* harmony import */ var _Search__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Search */ "./src/components/Table/Search.jsx");
+
 
 
 
@@ -7532,9 +7574,8 @@ const TableNav = ({
   handleSearch,
   handleFilter
 }) => {
-  const [searchTerm, setSearchTerm] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null);
-  const handleSearchClick = () => {
-    handleSearch(searchTerm);
+  const handleSearchClick = data => {
+    handleSearch(data);
   };
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "tablenav top"
@@ -7544,20 +7585,9 @@ const TableNav = ({
     className: "alignleft actions"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_DateFilter__WEBPACK_IMPORTED_MODULE_3__["default"], {
     handleFilter: handleFilter
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
-    htmlFor: "search",
-    className: "screen-reader-text"
-  }, "Search"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
-    type: "text",
-    id: "search",
-    name: "search",
-    placeholder: "Search...",
-    onChange: e => setSearchTerm(e.target.value)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
-    type: "button",
-    onClick: handleSearchClick,
-    className: "button"
-  }, "Search")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_Search__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    handleSearchClick: handleSearchClick
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "tablenav-pages one-page"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
     className: "displaying-num"
@@ -8288,7 +8318,7 @@ const Users = () => {
         state: {}
       });
     }
-  }, [data, dispatch, search]); // if any error found add dispatch here
+  }, [data, dispatch]); // if any error found add dispatch here
 
   const handleDelete = async ids => {
     if (window.confirm('Are you sure you want to delete the selected users?')) {

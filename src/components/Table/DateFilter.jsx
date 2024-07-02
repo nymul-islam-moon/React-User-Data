@@ -20,7 +20,6 @@ const DateFilter = ({handleFilter}) => {
                 className="postform"
                 onChange={(e) => setStartDate(e.target.value)}
             />
-
             <label htmlFor="filter-end-date" className="screen-reader-text">End Date</label>
             <input
                 type="date"

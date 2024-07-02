@@ -137,8 +137,6 @@ class Users extends \WP_REST_Controller {
             $data[]   = $this->prepare_response_for_collection( $response );
         }
 
-
-
         $total      = rud_count( 'react_user_data_users' );
         $max_pages  = ceil( $total / (int) $args['number'] );
         $per_page   = (int) $args['number'];

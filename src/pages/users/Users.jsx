@@ -43,7 +43,7 @@ const Users = () => {
             // Clear the message after displaying it
             navigate(location.pathname, { replace: true, state: {} });
         }
-    }, [data, dispatch, search]); // if any error found add dispatch here
+    }, [data, dispatch]); // if any error found add dispatch here
 
     const handleDelete = async (ids) => {
         if (window.confirm('Are you sure you want to delete the selected users?')) {
