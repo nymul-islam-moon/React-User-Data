@@ -5,7 +5,7 @@ import Thead from "./Thead";
 import Tbody from "./Tbody";
 import Pagination from "./Pagination";
 
-const Table = ({ title, columns, data, isLoading, handleDelete, totalData, totalPages, currentPage, handleCurrentPage, currentData, addActionLink, editActionLink, isDeleteLoading, handleBulkAction, handleSearch, handleFilter }) => {
+const Table = ({ title, columns, data, isLoading, handleDelete, totalData, totalPages, currentPage, handleCurrentPage, currentData, addActionLink, editActionLink, isDeleteLoading, handleBulkAction, handleSearch, handleFilter, handleSort, order, orderBy }) => {
 
     const [selectedItems, setSelectedItems] = useState([]);
     const [isAllSelected, setIsAllSelected] = useState(false);
@@ -45,7 +45,7 @@ const Table = ({ title, columns, data, isLoading, handleDelete, totalData, total
             <Link to={addActionLink} className="page-title-action">Add {title}</Link>
             <TableNav title={title} totalData={totalData} currentData={currentData} bulkAction={bulkAction} handleSearch={handleSearch} handleFilter={handleFilter}/>
             <table className="wp-list-table widefat fixed striped">
-                <Thead columns={columns} isAllSelected={isAllSelected} onSelectAll={handleSelectAll} />
+                <Thead columns={columns} isAllSelected={isAllSelected} onSelectAll={handleSelectAll} handleSort={handleSort} order={order} orderBy={orderBy}/>
                 <Tbody columns={columns} isLoading={isLoading} data={data} handleDelete={handleDelete} editActionLink={editActionLink} isDeleteLoading={isDeleteLoading} selectedItems={selectedItems} onSelectItem={handleSelectItem} />
             </table>
             {totalData > 10 && <Pagination currentPage={currentPage} totalPage={totalPages} nextPage={handleNextPage} previousPage={handlePreviousPage} pageClick={handlePageClick} />}

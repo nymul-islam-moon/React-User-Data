@@ -121,6 +121,14 @@ class Users extends \WP_REST_Controller {
             $args['search'] = $request['search'];
         }
 
+        // Ensure these parameters are passed correctly
+        if ( isset( $request['orderby'] ) && ! empty( $request['orderby'] ) ) {
+            $args['orderby'] = $request['orderby'];
+        }
+        if ( isset( $request['order'] ) && ! empty( $request['order'] ) ) {
+            $args['order'] = $request['order'];
+        }
+
         // change `per_page` to `number`
         $args['number'] = $args['per_page'];
         $args['offset'] = $args['number'] * ( $args['page'] - 1 );
@@ -528,6 +536,21 @@ class Users extends \WP_REST_Controller {
             'description'       => __( 'Limit results to those matching a string.' ),
             'type'              => 'string',
             'sanitize_callback' => 'sanitize_text_field',
+        ];
+
+        $params['orderby'] = [
+            'description'       => __( 'Sort collection by object attribute.' ),
+            'type'              => 'string',
+            'default'           => 'id',
+            'sanitize_callback' => 'sanitize_text_field',
+            'enum'              => ['id', 'name', 'email', 'phone', 'created_at'],
+        ];
+
+        $params['order'] = [
+            'description'       => __( 'Order sort attribute ascending or descending.' ),
+            'type'              => 'string',
+            'default'           => 'asc',
+            'enum'              => ['asc', 'desc'],
         ];
 
         return $params;

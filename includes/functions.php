@@ -51,9 +51,14 @@ function rud_get_users( $args = [] ) {
         $date_query = $wpdb->prepare( "AND DATE(created_at) = %s", $args['start_date'] );
     }
 
+    // Sanitize orderBy to prevent SQL injection
+    $allowed_orderby = ['name', 'email', 'phone', 'created_at'];
+    $orderby = in_array($args['orderby'], $allowed_orderby) ? $args['orderby'] : 'id';
+
+    // Final query with search and date range filters
     $items = $wpdb->get_results(
         $wpdb->prepare(
-            "SELECT * FROM {$wpdb->prefix}react_user_data_users WHERE 1=1 $search $date_query ORDER BY {$args['orderby']} {$args['order']} LIMIT %d, %d",
+            "SELECT * FROM {$wpdb->prefix}react_user_data_users WHERE 1=1 $search $date_query ORDER BY {$orderby} {$args['order']} LIMIT %d, %d",
             $args['offset'],
             $args['number']
         )

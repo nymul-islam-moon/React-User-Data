@@ -18,7 +18,9 @@ const Users = () => {
     const [ search, setSearch ] = useState(null);
     const [ filterStartDate, setFilterStartDate ] = useState(null);
     const [ filterEndDate, setFilterEndDate ] = useState(null);
-    const { data, isLoading, error, headers, fetchData } = useFetch(url, currentPage, search, filterStartDate, filterEndDate);
+    const [ orderBy, setOrderBy ] = useState('id');
+    const [ order, setOrder ] = useState('asc');
+    const { data, isLoading, error, headers, fetchData } = useFetch(url, currentPage, search, filterStartDate, filterEndDate, orderBy, order);
     const { deleteItem, isDeleteLoading, deleteError } = useDelete(url);
     const dispatch = useDispatch();
     const users = useSelector((state) => state.usersReducer.users);
@@ -75,6 +77,19 @@ const Users = () => {
         setCurrentPage(1);
     }
 
+    const handleSort = ( data ) => {
+        if ( data === orderBy ) {
+            if ( order === 'asc' ) {
+                setOrder('desc');
+            } else {
+                setOrder('asc');
+            }
+        } else {
+            setOrderBy(data);
+            setOrder('asc');
+        }
+    }
+
     const handleFilter = (start, end) => {
         if ( start ) {
             setFilterStartDate(start);
@@ -118,6 +133,9 @@ const Users = () => {
                     handleDelete={handleDelete}
                     handleSearch={handleSearch}
                     handleFilter={handleFilter}
+                    handleSort={handleSort}
+                    order={order}
+                    orderBy={orderBy}
                     handleBulkAction={handleBulkAction}
                 />
             )}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 
-const useFetch = (url, currentPage, search, filterStartDate, filterEndDate) => {
+const useFetch = (url, currentPage, search, filterStartDate, filterEndDate, orderBy, order) => {
     const [data, setData] = useState(null);
     const [headers, setHeaders] = useState(null);
     const [error, setError] = useState(null);
@@ -18,6 +18,9 @@ const useFetch = (url, currentPage, search, filterStartDate, filterEndDate) => {
         if (filterEndDate) {
             queryString += `&end_date=${filterEndDate}`;
         }
+
+        queryString += `&orderby=${orderBy}&order=${order}`;
+
         return queryString;
     };
 
@@ -39,7 +42,8 @@ const useFetch = (url, currentPage, search, filterStartDate, filterEndDate) => {
             setError(err);
             console.error(err);
         }
-    }, [url, currentPage, search, filterStartDate, filterEndDate]);
+        console.log(orderBy);
+    }, [url, currentPage, search, filterStartDate, filterEndDate, orderBy, order]);
 
     useEffect(() => {
         fetchData();
